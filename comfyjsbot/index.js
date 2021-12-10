@@ -41,7 +41,9 @@ ComfyJS.onChat = ( user, message, flags, self, extra ) => {
         logEvent("JOINREALM", JSON.stringify({user: user, message: message, flags: flags, extra:extra}))
     } else if ( flags.customReward ) {
         logEvent("CUSTOMREWARD", JSON.stringify({user: user, message: message, flags: flags, extra:extra}))
-    } 
+    } else {
+        logEvent("NORMALCHAT", JSON.stringify({user: user, message: message, flags: flags, extra:extra}))
+    }
 }
 
 ComfyJS.onRaid = ( user, viewers, extra ) => {
