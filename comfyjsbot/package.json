@@ -1,0 +1,15 @@
+{
+  "name": "sign210",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "comfy.js": "^1.1.12",
+    "mysql": "^2.18.1"
+  }
+}
