@@ -1,7 +1,7 @@
 # pip3 install python-dotenv
 from dotenv import load_dotenv
-from os.path import exists
 from os.path import getsize
+from os.path import exists
 import os
 
 class Downloader():
@@ -12,6 +12,9 @@ class Downloader():
         
         load_dotenv()
         self.PY_FILE_DIR = os.getenv('PY_FILE_DIR')
+
+    def download_img(self, filename):
+        os.system(f"curl {self.PY_FILE_DIR}/{filename} > {filename}")
 
     def download(self, filename):
         print(f"File {filename} - Starting Download!!")
