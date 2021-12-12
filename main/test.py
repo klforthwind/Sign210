@@ -7,17 +7,12 @@ import os
 if not exists(".env"):
     raise Exception(".env file not found")
 
+load_dotenv()
+PY_FILE_LOC = os.getenv('PY_FILE_LOC')
+LATEST_PY = os.getenv('LATEST_PY')
+CURR_PY = os.getenv('CURR_PY')
+
 while True:
-    load_dotenv()
-
-    # filename of current python file being ran by this program
-    CURR_PY = os.getenv('CURR_PY')
-
-    # filename of latest python downloaded from url
-    LATEST_PY = os.getenv('LATEST_PY')
-
-    # url of latest python to download
-    PY_FILE_LOC = os.getenv('PROJECT_UPDATES')
     
     try:
         # curl latest python from server
