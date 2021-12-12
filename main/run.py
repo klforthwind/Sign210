@@ -8,7 +8,7 @@ if not exists(".env"):
     raise Exception(".env file not found")
 
 load_dotenv()
-PY_FILE_LOC = os.getenv('PY_FILE_LOC')
+PY_FILE_DIR = os.getenv('PY_FILE_DIR')
 LATEST_PY = os.getenv('LATEST_PY')
 CURR_PY = os.getenv('CURR_PY')
 
@@ -16,7 +16,7 @@ while True:
     
     try:
         # curl latest python from server
-        os.system(f"curl {PY_FILE_LOC} > {LATEST_PY}")
+        os.system(f"curl {PY_FILE_DIR}/packager.py > {LATEST_PY}")
 
         # verify curr_py exists (in order to diff it)
         if not exists(CURR_PY):
