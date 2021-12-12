@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "comfy.js": "^1.1.12",
+    "dotenv": "^10.0.0",
     "mysql": "^2.18.1"
   }
 }

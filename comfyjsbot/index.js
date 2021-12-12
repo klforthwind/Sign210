@@ -13,8 +13,9 @@ var pool  = mysql.createPool({
 
 var logEvent = ( ev_type, ev_extra ) => {
     pool.getConnection(function(err, connection) {
+        console.log(ev_type)
         if (err) {console.log(err)}
-        if (ev_extra.length < 127) {
+        if (ev_extra.length < 2047) {
             var sql = "INSERT INTO EVENTS (ev_type, ev_extra) VALUES ('" + ev_type + "', '" + ev_extra + "')"
             connection.query( sql, function(err, rows) {
                 connection.release()
