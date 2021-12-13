@@ -3,7 +3,7 @@ var ComfyJS = require("comfy.js")
 
 require('dotenv').config()
 
-var pool  = mysql.createPool({
+var pool = mysql.createPool({
     connectionLimit : 10,
     host: "127.0.0.1",
     user: process.env.MYSQL_USER,
@@ -11,18 +11,32 @@ var pool  = mysql.createPool({
     database: process.env.MYSQL_DB
 })
 
-var logEvent = ( ev_type, ev_extra ) => {
-    pool.getConnection(function(err, connection) {
-        console.log(ev_type)
+function keepAlive(){
+    pool.query("SELECT 1", ( err, res, fields ) => {
         if (err) {console.log(err)}
-        if (ev_extra.length < 2047) {
-            var sql = "INSERT INTO EVENTS (ev_type, ev_extra) VALUES ('" + ev_type + "', '" + ev_extra + "')"
-            connection.query( sql, function(err, rows) {
-                connection.release()
-            })
-        }
-        
     })
+}
+setInterval(keepAlive, 30000)
+
+
+var logEvent = ( ev_type, ev_extra ) => {
+    console.log(ev_type)
+    let sql = "INSERT INTO EVENTS (ev_type, ev_extra) VALUES ('" + ev_type + "', '" + ev_extra + "')"
+    if (ev_extra.length > 2046) return;
+    pool.query(sql, (err, res, fields) => {
+        if (err) {console.log(err)}
+    });
+    // pool.getConnection(function(err, connection) {
+    //     console.log(ev_type)
+    //     if (err) {console.log(err)}
+    //     if (ev_extra.length < 2047) {
+    //         var sql = "INSERT INTO EVENTS (ev_type, ev_extra) VALUES ('" + ev_type + "', '" + ev_extra + "')"
+    //         connection.query( sql, function(err, rows) {
+    //             connection.release()
+    //         })
+    //     }
+        
+    // })
 }
 
 ComfyJS.onCommand = ( user, command, message, flags, extra ) => {
