@@ -40,6 +40,15 @@ var logEvent = ( ev_type, ev_extra ) => {
 }
 
 ComfyJS.onCommand = ( user, command, message, flags, extra ) => {
+    if (command == "reconnect") {
+        pool = mysql.createPool({
+            connectionLimit : 10,
+            host: "127.0.0.1",
+            user: process.env.MYSQL_USER,
+            password: process.env.MYSQL_PASSWORD,
+            database: process.env.MYSQL_DB
+        });
+    }
     logEvent("COMMAND", JSON.stringify({user:user, command:command, message:message, flags:flags, extra:extra}))
 }
 

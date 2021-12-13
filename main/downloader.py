@@ -1,3 +1,4 @@
+# sudo pip3 install python-dotenv
 # pip3 install python-dotenv
 from dotenv import load_dotenv
 from os.path import getsize
