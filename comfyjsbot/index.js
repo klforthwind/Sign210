@@ -11,44 +11,31 @@ var pool = mysql.createPool({
     database: process.env.MYSQL_DB
 })
 
-function keepAlive(){
-    pool.query("SELECT 1", ( err, res, fields ) => {
-        if (err) {console.log(err)}
-    })
-}
-setInterval(keepAlive, 30000)
+// function keepAlive(){
+//     pool.query("SELECT 1", ( err, res, fields ) => {
+//         if (err) {console.log(err)}
+//     })
+// }
+// setInterval(keepAlive, 30000)
 
 
 var logEvent = ( ev_type, ev_extra ) => {
     console.log(ev_type)
     let sql = "INSERT INTO EVENTS (ev_type, ev_extra) VALUES ('" + ev_type + "', '" + ev_extra + "')"
     if (ev_extra.length > 2046) return;
-    pool.query(sql, (err, res, fields) => {
-        if (err) {console.log(err)}
-    });
-    // pool.getConnection(function(err, connection) {
-    //     console.log(ev_type)
-    //     if (err) {console.log(err)}
-    //     if (ev_extra.length < 2047) {
-    //         var sql = "INSERT INTO EVENTS (ev_type, ev_extra) VALUES ('" + ev_type + "', '" + ev_extra + "')"
-    //         connection.query( sql, function(err, rows) {
-    //             connection.release()
-    //         })
-    //     }
-        
-    // })
+
+    pool.getConnection( (err, connection) => {
+        connection.query( 'START TRANSACTION', (err, rows) => {
+            connection.query( sql, (err, rows) => {
+                connection.query( 'COMMIT', (err, rows) => {
+                    connection.release()
+                })
+            })
+        })
+    })
 }
 
 ComfyJS.onCommand = ( user, command, message, flags, extra ) => {
-    if (command == "reconnect") {
-        pool = mysql.createPool({
-            connectionLimit : 10,
-            host: "127.0.0.1",
-            user: process.env.MYSQL_USER,
-            password: process.env.MYSQL_PASSWORD,
-            database: process.env.MYSQL_DB
-        });
-    }
     logEvent("COMMAND", JSON.stringify({user:user, command:command, message:message, flags:flags, extra:extra}))
 }
 
