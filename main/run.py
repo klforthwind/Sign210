@@ -1,4 +1,5 @@
 from downloader import *
+import os
 
 LATEST_PY = "packager.py"
 
@@ -10,6 +11,6 @@ while True:
 
         # run python files using sudo - neopixel lights require sudo
         os.system(f"sudo python3 {LATEST_PY}")
-    except(error):
+    except:
         # expecting errors on new updates - don't want program to crash
         pass
