@@ -11,14 +11,6 @@ var pool = mysql.createPool({
     database: process.env.MYSQL_DB
 })
 
-// function keepAlive(){
-//     pool.query("SELECT 1", ( err, res, fields ) => {
-//         if (err) {console.log(err)}
-//     })
-// }
-// setInterval(keepAlive, 30000)
-
-
 var logEvent = ( ev_type, ev_extra ) => {
     console.log(ev_type)
     let sql = "INSERT INTO EVENTS (ev_type, ev_extra) VALUES ('" + ev_type + "', '" + ev_extra + "')"
