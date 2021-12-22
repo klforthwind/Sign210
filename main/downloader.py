@@ -15,7 +15,7 @@ class Downloader():
         self.PY_FILE_DIR = os.getenv('PY_FILE_DIR')
 
     def download_img(self, filename):
-        os.system(f"curl {self.PY_FILE_DIR}/{filename} > {filename}")
+        os.system(f"curl {self.PY_FILE_DIR}/{filename} > {filename.lower()}")
 
     def download(self, filename):
         print(f"File {filename} - Starting Download!!")
