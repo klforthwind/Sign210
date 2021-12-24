@@ -2,17 +2,20 @@ import json
 
 class TableHandler():
     ev_priority = {
+        "RAID": 12,
+        "CHEER": 10,
+        "SUB": 10,
+        "RESUB": 10,
+        "GIFTSUB": 10,
+        "MYSTERYSUB": 10,
+        "CONTINUESUB": 7,
+        "FOLLOW": 6,
+        "GAMECHANGE":5,
+        "CLEAR":4,
+        "COMMAND": 3
         "JOINREALM": 2,
         "CUSTOMREWARD": 2,
-        "NORMALCHAT": 0,
-        "COMMAND": 3,
-        "RAID": 5,
-        "CHEER": 5,
-        "SUB": 5,
-        "RESUB": 5,
-        "GIFTSUB": 5,
-        "MYSTERYSUB": 5,
-        "CONTINUESUB": 4
+        "NORMALCHAT": 0
     }
 
     def get_event(self, db):

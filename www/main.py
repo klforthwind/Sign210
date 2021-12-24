@@ -15,11 +15,11 @@ db = DBConn()
 db.connect()
 
 twitch_api = TwitchAPI()
-print(twitch_api.get_twitch_data(db))
 
 t_end = time.time() + UPDATES_WAIT_TIME_SEC
 while time.time() < t_end:
 
+    table.process_api(db)
     # process EVENTS table
     table.process_events(db)
 
