@@ -14,6 +14,7 @@ class TwitchAPI():
         self.CLIENT_ID = os.getenv('CLIENT_ID')
         self.CLIENT_SECRET = os.getenv('CLIENT_SECRET')
         self.TWITCH_USER = os.getenv('TWITCH_USER')
+        self.TWITCH_USER_ID = os.getenv('TWITCH_USER_ID')
 
     def get_twitch_data(self, db):
         if not self.is_valid(db):
@@ -23,30 +24,24 @@ class TwitchAPI():
 
         token = db.get_evar(db.ACCESS_TOKEN)
 
-        user_curl_req = f"curl -X GET \
-            'https://api.twitch.tv/helix/users?login={self.TWITCH_USER}' \
+        stream_curl_req = f"curl -X GET \
+            'https://api.twitch.tv/helix/channels?broadcaster_id={self.TWITCH_USER_ID}' \
             -H 'Authorization: Bearer {token}' \
             -H 'Client-Id: {self.CLIENT_ID}'"
         
-        result = json.loads(os.popen(user_curl_req).read())
+        result = json.loads(os.popen(stream_curl_req).read())
+        data["game_name"] = result["data"][0]["game_name"]
+        data["title"] = result["data"][0]["title"]
 
-        user_id = result["data"][0]["id"]
-        data["user_id"] = user_id
-        print(user_id)
-
-        # stream_curl_req = f"curl -X GET \
-        #     'https://api.twitch.tv/helix/channels?broadcaster_id={user_id}' \
-        #     -H 'Authorization: Bearer {token}' \
-        #     -H 'Client-Id: {self.CLIENT_ID}'"
+        follows_curl_req = f"curl -X GET \
+            'https://api.twitch.tv/helix/users/follows?to_id={self.TWITCH_USER_ID}' \
+            -H 'Authorization: Bearer {token}' \
+            -H 'Client-Id: {self.CLIENT_ID}'"
         
-        # result = json.loads(os.popen(user_curl_req).read())
+        result = json.loads(os.popen(follows_curl_req).read())
+        data["follower_count"] = result["total"]
 
-        # follows_curl_req = f"curl -X GET \
-        #     'https://api.twitch.tv/helix/users/follows?to_id={user_data["id"]}' \
-        #     -H 'Authorization: Bearer {token}' \
-        #     -H 'Client-Id: {self.CLIENT_ID}'"
-        # result = json.loads(os.popen(follows_curl_req).read())
-        # print(result["total"])
+        return data
 
     def is_valid(self, db):
         token = db.get_evar(db.ACCESS_TOKEN)
@@ -63,4 +58,3 @@ class TwitchAPI():
         result = json.loads(os.popen(curl_req).read())
         print(result["access_token"])
         db.set_evar(db.ACCESS_TOKEN, result["access_token"])
-

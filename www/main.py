@@ -15,7 +15,7 @@ db = DBConn()
 db.connect()
 
 twitch_api = TwitchAPI()
-twitch_api.get_twitch_data(db)
+print(twitch_api.get_twitch_data(db))
 
 t_end = time.time() + UPDATES_WAIT_TIME_SEC
 while time.time() < t_end:

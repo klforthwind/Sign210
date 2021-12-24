@@ -8,11 +8,16 @@ from os.path import exists
 import os
 
 class DBConn():
+    CURR_FOLLOWERS = "CURR_FOLLOWERS"
+    ACCESS_TOKEN = "ACCESS_TOKEN"
+    CURR_TITLE = "CURR_TITLE"
+    CURR_GAME = "CURR_GAME"
+
     CURR_MAT = "CURR_MATRIX"
     CURR_STRIP = "CURR_STRIP"
     DEF_MAT = "DEFAULT_MATRIX"
     DEF_STRIP = "DEFAULT_STRIP"
-    ACCESS_TOKEN = "ACCESS_TOKEN"
+
 
     def __init__(self):
         if not exists(".env"):
