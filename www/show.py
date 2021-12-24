@@ -1,8 +1,6 @@
 # sudo apt install numpy-python
+from show_functions import *
 from random import randint
-from loading_raid import *
-from snake import *
-import numpy as np
 import time
 import re
 import os
@@ -13,19 +11,19 @@ class Show():
     def __init__(self):
         self.pattern = re.compile(self.regex)
         self.functions = {
-            "JOINREALM": self.run_realm,
-            "CUSTOMREWARD": self.run_reward,
-            "NORMALCHAT": self.run_chat,
-            "COMMAND": self.run_command,
-            "RAID": self.run_raid,
-            "CHEER": self.run_cheer,
             "SUB": self.run_sub,
             "RESUB": self.run_resub,
             "GIFTSUB": self.run_giftsub,
             "MYSTERYSUB": self.run_mysterysub,
             "CONTINUESUB": self.run_continuesub,
             "GAMECHANGE": self.run_gamechange,
+            "CUSTOMREWARD": self.run_reward,
+            "JOINREALM": self.run_realm,
+            "NORMALCHAT": self.run_chat,
+            "COMMAND": self.run_command,
             "FOLLOW": self.run_follow,
+            "CHEER": self.run_cheer,
+            "RAID": self.run_raid
         }
 
     def run(self, event, db, pixels):
@@ -66,12 +64,6 @@ class Show():
             pixels.show_image(default_matrix)
             pixels.keep_strip()
 
-    def run_gamechange(self, event, db, pixels):
-        pass
-    
-    def run_follow(self, event, db, pixels):
-        pass
-
     def run_raid(self, event, db, pixels):
         # if event[2]['flags']['vip'] or event[2]['flags']['broadcaster']:
         if False:
@@ -79,68 +71,30 @@ class Show():
         else:
             loading_raid(event, db, pixels)
 
+    def run_gamechange(self, event, db, pixels):
+        show_game(event[2], pixels, 8)
+    
+    def run_follow(self, event, db, pixels):
+        pulse(db, pixels, "follow.png", [14,2,36], [153,51,255], 8)
+    
+    def run_mysterysub(self, event, db, pixels):
+        pulse(db, pixels, "ghost.png", [10,10,10], [200,200,200], 10)
+
     def run_cheer(self, event, db, pixels):
-        colors = [(153,51,255),(0,0,255),(0,255,0)]
-        offset = 0
-
-        pixels.show_image("bits.png")
-        db.set_evar(db.CURR_MAT, "bits.png")
-
-        end_time = time.time() + 10
-        while time.time() < end_time:
-            offset += 1
-            arr = []
-            for x in range(124):
-                arr.append(colors[((offset + x)// 3) % 3])
-            
-            pixels.color_strip(arr)
-
-            time.sleep(0.1)
+        cheer(event, db, pixels)
 
     def run_sub(self, event, db, pixels):
-        db.set_evar(db.CURR_MAT, "")
-        j = 0
-        end_time = time.time() + 10
-        while time.time() < end_time:
-            pixels.show_image(f"star/star{(j//4)%5+1}.png")
-            color = self.wheel(j & 255)
-            pixels.color_strip([color]*124)
-            time.sleep(0.025)
-            j+=1
+        slow_rainbow(event, db, pixels)
+    
     def run_resub(self, event, db, pixels):
         self.run_sub(event, db, pixels)
     
     def run_giftsub(self, event, db, pixels):
-        db.set_evar(db.CURR_MAT, "")
-        j = 0
-        end_time = time.time() + 10
-        while time.time() < end_time:
-            pixels.show_image(f"star/star{(j//4)%5+1}.png")
-            strip = []
-            for x in range(124):
-                # color = self.wheel(j & 255)
-                color = self.wheel((int(x * 255 / 124+j)%255))
-                strip.append(color)
-            pixels.color_strip(strip)
-            time.sleep(0.025)
-            j+=1
-    def run_mysterysub(self, event, db, pixels):
-        db.set_evar(db.CURR_MAT, "")
-        pixels.show_image(f"ghost.png")
-        low = np.array([10,10,10])
-        high = np.array([200,200,200])
-        self.lerp_colors(pixels, low, high, 10)
+        fast_rainbow(event, db, pixels)
 
     def run_continuesub(self, event, db, pixels):
-        self.run_sub(event, db, pixels)
+        slow_rainbow_shift(event, db, pixels)
     
-    def run_follow(self, event, db, pixels):
-        db.set_evar(db.CURR_MAT, "")
-        pixels.show_image(f"follow.png")
-        low = np.array([14,2,36])
-        high = np.array([153,51,255])
-        self.lerp_colors(pixels, low, high, 8)
-
     def run_command(self, event, db, pixels):
         ev_extra = event[2]
         cmd = ev_extra['command'].lower()
@@ -222,6 +176,8 @@ class Show():
             self.run_follow(event,db,pixels)
         if cmd == "gifty":
             self.run_giftsub(event,db,pixels)
+        if cmd == "continue":
+            self.run_continuesub(event,db,pixels)
         
 
     def run_realm(self, event, db, pixels):
@@ -232,45 +188,3 @@ class Show():
 
     def run_chat(self, event, db, pixels):
         pass
-    
-    def lerp_colors(self, pixels, rgb1, rgb2, run_time):
-        diff = rgb2 - rgb1
-        change = diff
-        j = 0
-        full_loop = 60
-        half_loop = full_loop / 2
-        end_time = time.time() + run_time
-        while time.time() < end_time:
-            rela_pt = (j%full_loop)/(half_loop)
-            color = (0,0,0)
-            if rela_pt > 1:
-                rgb = rgb2 - change * (rela_pt - 1)
-                color = tuple(map(int, rgb))
-            else:
-                rgb = rgb1 + change * rela_pt
-                color = tuple(map(int, rgb))
-            
-            pixels.color_strip([color]*124)
-            j += 1
-            time.sleep(0.025)
-
-    def wheel(self, pos):
-        # Input a value 0 to 255 to get a color value.
-        # The colours are a transition r - g - b - back to r.
-        if pos < 0 or pos > 255:
-            r = g = b = 0
-        elif pos < 85:
-            r = int(pos * 3)
-            g = int(255 - pos * 3)
-            b = 0
-        elif pos < 170:
-            pos -= 85
-            r = int(255 - pos * 3)
-            g = 0
-            b = int(pos * 3)
-        else:
-            pos -= 170
-            r = 0
-            g = int(pos * 3)
-            b = int(255 - pos * 3)
-        return (r,g,b)
