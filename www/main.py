@@ -1,5 +1,4 @@
 from table_handler import *
-from twitch_api import *
 from db_conn import *
 from lights import *
 from show import *
@@ -14,18 +13,16 @@ show = Show()
 db = DBConn()
 db.connect()
 
-twitch_api = TwitchAPI()
-
 t_end = time.time() + UPDATES_WAIT_TIME_SEC
 while time.time() < t_end:
 
-    table.process_api(db)
     # process EVENTS table
     table.process_events(db)
 
     # get event from P_QUEUE table
     ev = table.get_event(db)
 
+    # run event
     show.run(ev, db, pixels)
 
 db.disconnect()

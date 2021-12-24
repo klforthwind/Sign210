@@ -72,7 +72,8 @@ class Show():
 
     def run_raid(self, event, db, pixels):
         strip_len = pixels.STRIP_LEN
-        if event[2]['flags']['vip'] or event[2]['flags']['broadcaster']:
+        # if event[2]['flags']['vip'] or event[2]['flags']['broadcaster']:
+        if False:
             pass
             # color = (255,0,0)
             # if event[2]['user'].lower() == "beta64":
@@ -213,11 +214,9 @@ class Show():
         cmd = ev_extra['command'].lower()
         msg = ev_extra['message'].lower()
 
-        print(ev_extra['flags'])
-
         # mod / broadcaster only commands
         if ev_extra['flags']['mod'] or ev_extra['flags']['broadcaster']:
-            if cmd == 'addcommand':
+            if cmd == 'ac':
                 split_msg = msg.split()
                 if len(split_msg) == 2:
                     if self.pattern.match(split_msg[0]) and self.pattern.match(split_msg[1]):
@@ -226,7 +225,7 @@ class Show():
                             sql = "INSERT INTO COMMANDS (command, pic_name) VALUES " + \
                             f"('{split_msg[0]}', '{split_msg[1]}')"
                             db.query(sql)
-            if cmd == 'delcommand':
+            if cmd == 'dc':
                 if len(msg.split()) == 1:
                     if self.pattern.match(msg):
                         db.execute(f"DELETE FROM COMMANDS WHERE command = '{msg}'")
@@ -237,14 +236,13 @@ class Show():
                 db.reset_config()
                 os.system("sudo shutdown -h now")
             if cmd == 'showall':
+                db.set_evar(db.CURR_MAT, "")
                 res = db.query(f"SELECT * FROM COMMANDS ORDER BY command")
                 if len(res) > 0:
                     for x in res:
                         pixels.show_image(x[1])
                         pixels.keep_strip()
                         time.sleep(0.5)
-                
-                db.set_evar(db.CURR_MAT, "")
             if cmd == 'setdefault':
                 if len(msg.split()) == 1:
                     if self.pattern.match(msg):

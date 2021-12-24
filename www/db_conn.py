@@ -1,6 +1,5 @@
 # sudo python3 -m pip install mysql-connector-python
 # pip3 install python-dotenv
-
 import mysql.connector
 from dotenv import load_dotenv
 from os.path import getsize
@@ -8,16 +7,16 @@ from os.path import exists
 import os
 
 class DBConn():
+    # config variables
     CURR_FOLLOWERS = "CURR_FOLLOWERS"
     ACCESS_TOKEN = "ACCESS_TOKEN"
-    CURR_TITLE = "CURR_TITLE"
     CURR_GAME = "CURR_GAME"
 
+    # light config variables
     CURR_MAT = "CURR_MATRIX"
     CURR_STRIP = "CURR_STRIP"
     DEF_MAT = "DEFAULT_MATRIX"
     DEF_STRIP = "DEFAULT_STRIP"
-
 
     def __init__(self):
         if not exists(".env"):
@@ -55,9 +54,7 @@ class DBConn():
     def get_evar(self, evar):
         # [(EVAR, VAL)]
         res = self.query(f"SELECT * FROM CONFIG WHERE evar = '{evar}'")
-        if len(res) == 0:
-            return ""
-        return res[0][1]
+        return res[0][1] if len(res) else ""
 
     def set_evar(self, evar, val):
         self.execute(f"DELETE FROM CONFIG WHERE evar = '{evar}'")

@@ -2,6 +2,7 @@ import json
 
 class TableHandler():
     ev_priority = {
+        "ALLCLEAR": 13,
         "RAID": 12,
         "CHEER": 10,
         "SUB": 10,
@@ -10,9 +11,9 @@ class TableHandler():
         "MYSTERYSUB": 10,
         "CONTINUESUB": 7,
         "FOLLOW": 6,
-        "GAMECHANGE":5,
-        "CLEAR":4,
-        "COMMAND": 3
+        "GAMECHANGE": 5,
+        "CLEAR": 4,
+        "COMMAND": 3,
         "JOINREALM": 2,
         "CUSTOMREWARD": 2,
         "NORMALCHAT": 0
@@ -44,8 +45,14 @@ class TableHandler():
             if x[0] > latest_entry:
                 latest_entry = x[0]
             if ev_type in self.ev_priority:
+                priority = self.ev_priority[ev_type]
+                cmd = json.loads(x[2])['command'].lower()
+                if ev_type == "COMMAND" and cmd == "clear":
+                    priority = self.ev_priority["CLEAR"]
+                if ev_type == "COMMAND" and cmd == "allclear":
+                    priority = self.ev_priority["ALLCLEAR"]
                 sql = "INSERT INTO P_QUEUE (ev_type, ev_extra, importance) VALUES " + \
-                    f"('{ev_type}', '{x[2]}', {self.ev_priority[ev_type]})"
+                    f"('{ev_type}', '{x[2]}', {priority})"
                 db.query(sql)
 
         db.execute(f"DELETE FROM EVENTS WHERE id <= {latest_entry}")
@@ -53,5 +60,6 @@ class TableHandler():
     # event = (id, ev_type, ev_extra, importance)
     def should_clear(self, event):
         return (event[1] == "COMMAND" and 
-            event[2]['command'].lower() == "clear" and
+            (event[2]['command'].lower() == "allclear" or
+            event[2]['command'].lower() == "clear") and
             (event[2]['flags']['mod'] or event[2]['flags']['broadcaster']))
