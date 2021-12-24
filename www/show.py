@@ -35,11 +35,6 @@ class Show():
         ev_type = event[1]
         if ev_type in self.functions:
             self.functions[ev_type](event, db, pixels)
-    
-    def wait(self, t):
-        wait_t = time.time() + t
-        while time.time() < wait_t:
-            pass
 
     def run_default(self, event, db, pixels):
         curr_strip = db.get_evar(db.CURR_STRIP)
