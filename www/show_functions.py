@@ -55,7 +55,10 @@ def loading_raid(event, db, pixels):
         "mariohat":(255,0,0),
         "luigihat":(0,255,0),
         "waluigihat":(75,0,130),
-        "wariohat":(200,200,0)
+        "wariohat":(200,200,0),
+        "forthhat":(0,0,255),
+        "cheppyhat":(255,89,0),
+        "jjhat":(255,0,0)
     }
 
     color = hat_color[db.get_evar(db.DEF_STRIP)]

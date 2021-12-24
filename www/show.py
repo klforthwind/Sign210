@@ -35,13 +35,17 @@ class Show():
             self.functions[ev_type](event, db, pixels)
 
     def run_default(self, event, db, pixels):
+        curr_strip = db.get_evar(db.CURR_STRIP)
         default_strip = db.get_evar(db.DEF_STRIP)
 
         hat_color = {
             "mariohat":(255,0,0),
             "luigihat":(0,255,0),
             "waluigihat":(75,0,130),
-            "wariohat":(200,200,0)
+            "wariohat":(200,200,0),
+            "forthhat":(0,0,255),
+            "cheppyhat":(255,89,0),
+            "jjhat":(255,0,0)
         }
 
         strip = []
@@ -51,13 +55,15 @@ class Show():
             else:
                 strip.append(hat_color[default_strip])
 
-        pixels.set_strip(strip)
-        pixels.keep_strip()
+        if curr_strip != default_strip:
+            pixels.set_strip(strip)
+            pixels.keep_strip()
 
         curr_matrix = db.get_evar(db.CURR_MAT)
         default_matrix = db.get_evar(db.DEF_MAT)
         
         if curr_matrix != default_matrix:
+            pixels.set_strip(strip)
             db.set_evar(db.CURR_MAT, default_matrix)
             pixels.show_image(default_matrix)
             pixels.keep_strip()

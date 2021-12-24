@@ -1,3 +1,4 @@
+import time
 import re
 regex = "^[A-Za-z0-9.-_]+$"
 pattern = re.compile(regex)
@@ -61,6 +62,15 @@ def exec_command(event, db, pixels):
         if cmd == 'waluigihat':
             db.set_evar(db.DEF_MAT, "lr.png")
             db.set_evar(db.DEF_STRIP, "waluigihat")
+        if cmd == 'cheppyhat':
+            db.set_evar(db.DEF_MAT, "c.png")
+            db.set_evar(db.DEF_STRIP, "cheppyhat")
+        if cmd == 'forthhat' or cmd == 'forthwindhat':
+            db.set_evar(db.DEF_MAT, "f.png")
+            db.set_evar(db.DEF_STRIP, "forthhat")
+        if cmd == 'jjhat':
+            db.set_evar(db.DEF_MAT, "jj.png")
+            db.set_evar(db.DEF_STRIP, "jjhat")
 
     if pattern.match(cmd):
         res = db.query(f"SELECT * FROM COMMANDS WHERE command = '{cmd}'")
