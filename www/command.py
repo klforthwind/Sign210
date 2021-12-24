@@ -58,33 +58,25 @@ def exec_command(event, db, pixels):
                     db.set_evar(db.CURR_STRIP, "")
                     db.set_evar(db.DEF_STRIP, msg)
 
-        if cmd == 'mariohat':
-            db.set_evar(db.DEF_MAT, "m.png")
-            db.set_evar(db.DEF_STRIP, "255,0,0")
-        if cmd == 'wariohat':
-            db.set_evar(db.DEF_MAT, "w.png")
-            db.set_evar(db.DEF_STRIP, "200,200,0")
-        if cmd == 'luigihat':
-            db.set_evar(db.DEF_MAT, "l.png")
-            db.set_evar(db.DEF_STRIP, "0,255,0")
-        if cmd == 'waluigihat':
-            db.set_evar(db.DEF_MAT, "lr.png")
-            db.set_evar(db.DEF_STRIP, "75,0,130")
-        if cmd == 'cheppyhat':
-            db.set_evar(db.DEF_MAT, "c.png")
-            db.set_evar(db.DEF_STRIP, "255,89,0")
-        if cmd == 'forthhat' or cmd == 'forthwindhat':
-            db.set_evar(db.DEF_MAT, "f.png")
-            db.set_evar(db.DEF_STRIP, "0,0,255")
-        if cmd == 'jjhat':
-            db.set_evar(db.DEF_MAT, "jj.png")
-            db.set_evar(db.DEF_STRIP, "255,0,0")
+        hats = {
+            'mariohat': ("m.png", "255,0,0"),
+            'wariohat': ("w.png", "200,200,0"),
+            'luigihat': ("l.png", "0,255,0"),
+            'waluigihat': ("lr.png", "75,0,130"),
+            'cheppyhat': ("c.png", "255,89,0"),
+            'forthhat': ("f.png", "0,0,255"),
+            'forthwindhat': ("f.png", "0,0,255"),
+            "jjhat": ("jj.png", "255,0,0")
+        }
+
+        if cmd in hats:
+            db.set_evar(db.DEF_MAT, hats[cmd][0])
+            db.set_evar(db.DEF_STRIP, hats[cmd][1])
 
     if pattern.match(cmd):
         res = db.query(f"SELECT * FROM COMMANDS WHERE command = '{cmd}'")
         if len(res) > 0:
             pixels.show_image(res[0][1])
-            pixels.keep_strip()
             db.set_evar(db.CURR_MAT, res[0][1])
 
             time.sleep(4)
