@@ -128,7 +128,8 @@ def slow_rainbow(event, db, pixels):
 def fast_rainbow(event, db, pixels):
     db.set_evar(db.CURR_MAT, "")
     j = 0
-    colors = [(0,0,255),(255,0,255),(255,0,0),(255,255,0),(0,255,0),(255,0,0),(255,255,255)]
+    bri = 64    # brightness
+    colors = [(0,0,bri),(bri,0,bri),(bri,0,0),(bri,bri,0),(0,bri,0),(bri,0,0),(bri,bri,bri)]
 
     end_time = time.time() + 10
     while time.time() < end_time:
