@@ -1,5 +1,7 @@
 # sudo apt install numpy-python
 from random import randint
+from loading_raid import *
+from snake import *
 import numpy as np
 import time
 import re
@@ -37,7 +39,6 @@ class Show():
             self.functions[ev_type](event, db, pixels)
 
     def run_default(self, event, db, pixels):
-        curr_strip = db.get_evar(db.CURR_STRIP)
         default_strip = db.get_evar(db.DEF_STRIP)
 
         hat_color = {
@@ -55,11 +56,7 @@ class Show():
                 strip.append(hat_color[default_strip])
 
         pixels.set_strip(strip)
-
-        if curr_strip != default_strip:
-            db.set_evar(db.CURR_STRIP, default_strip)
-            
-            pixels.keep_strip()
+        pixels.keep_strip()
 
         curr_matrix = db.get_evar(db.CURR_MAT)
         default_matrix = db.get_evar(db.DEF_MAT)
@@ -67,83 +64,20 @@ class Show():
         if curr_matrix != default_matrix:
             db.set_evar(db.CURR_MAT, default_matrix)
             pixels.show_image(default_matrix)
+            pixels.keep_strip()
+
+    def run_gamechange(self, event, db, pixels):
+        pass
+    
+    def run_follow(self, event, db, pixels):
+        pass
 
     def run_raid(self, event, db, pixels):
-        strip_len = pixels.STRIP_LEN
         # if event[2]['flags']['vip'] or event[2]['flags']['broadcaster']:
         if False:
-            pass
-            # color = (255,0,0)
-            # if event[2]['user'].lower() == "beta64":
-            #     color = (255,0,255)
-            # start = randint(0,strip_len-1)
-            # size = 5
-
-            # apple = randint(0,strip_len-1)
-
-            # while size < strip_len:
-            #     start = (start + 1) % strip_len
-            #     if apple == start:
-            #         print("X")
-            #         size += 32
-            #         if start + size >= strip_len:
-            #             apple = randint((start + size) % strip_len, start-1)
-            #         else:
-            #             if start != 0:
-            #                 apple = (randint(0, start-1), randint(start+size,strip_len-1))[randint(0,1)]
-            #             else:
-            #                 apple = randint(start+size,strip_len-1)
-            #     strip = []
-            #     for x in range(124):
-            #         if start + size >= strip_len:
-            #             if x <= (start + size) % strip_len:
-            #                 strip.append(color)
-            #             elif x >= start:
-            #                 strip.append(color)
-            #             else:
-            #                 strip.append((0,0,0))
-            #         else:
-            #             if start <= x < start+size:
-            #                 strip.append(color)
-            #             else:
-            #                 strip.append((0,0,0))
-                
-            #     pixels.color_strip(strip)
-            #     time.sleep(0.01)
-
-
+            snake(event, db, pixels)
         else:
-            red = (255, 0, 0)
-            white = (200,200,200)
-
-            strip_len = 4
-            endpx = 0
-            pixels.color_all([(0,0,0)] * 188)
-
-            ct = 0
-
-            while endpx <= 126:
-                newpx = 126
-                while newpx > endpx:
-                    arr = []
-                    for x in range(124):
-                        if newpx + strip_len >= x >= newpx or x < endpx :
-                            if ct < 6 or x <= 23:
-                                arr.append(white)
-                            else:
-                                arr.append(red)
-                        else:
-                            arr.append((0,0,0))
-                    
-                    pixels.color_strip(arr)
-                    
-                    newpx -= 3
-                endpx += strip_len
-                ct+=1
-            
-            pixels.show_image("raid.png")
-            db.set_evar(db.CURR_MAT, "raid.png")
-            self.wait(2)
+            loading_raid(event, db, pixels)
 
     def run_cheer(self, event, db, pixels):
         colors = [(153,51,255),(0,0,255),(0,255,0)]
@@ -274,7 +208,7 @@ class Show():
                 pixels.keep_strip()
                 db.set_evar(db.CURR_MAT, res[0][1])
 
-                self.wait(4)
+                time.sleep(4)
 
         if cmd == "cheer":
             self.run_cheer(event, db, pixels)

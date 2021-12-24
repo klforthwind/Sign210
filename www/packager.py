@@ -12,10 +12,12 @@ class Packager():
 
         # main events / lights handler
         # self.downloader.download("table_handler.py")
+        self.downloader.download("loading_raid.py")
+        self.downloader.download("snake.py")
         # self.downloader.download("db_conn.py")
         # self.downloader.download("lights.py")
-        # self.downloader.download("show.py")
-        # self.downloader.download("main.py")
+        self.downloader.download("show.py")
+        self.downloader.download("main.py")
 
         # images
         # self.downloader.download_img("imgs/bits.png")
