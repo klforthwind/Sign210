@@ -115,8 +115,8 @@ def slow_rainbow(event, db, pixels):
         pixels.show_image(f"star/star{(j//4)%5+1}.png")
         color = wheel(j & 255)
         pixels.color_strip([color]*124)
-        time.sleep(0.025)
-        j+=1
+        time.sleep(0.01)
+        j+=2
 
 #
 #
@@ -179,8 +179,6 @@ def cheer(event, db, pixels):
         pixels.color_strip(arr)
 
         time.sleep(0.1)
-
-
 
 
 
