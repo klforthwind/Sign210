@@ -1,6 +1,8 @@
 # sudo pip3 install python-dotenv
 from dotenv import load_dotenv
 from os.path import exists
+from db_conn import *
+import time
 import json
 import os
 
@@ -58,3 +60,37 @@ class TwitchAPI():
         result = json.loads(os.popen(curl_req).read())
         print(result["access_token"])
         db.set_evar(db.ACCESS_TOKEN, result["access_token"])
+
+if __name__ == "__main__":
+    twitch_api = TwitchAPI()
+    db = DBConn()
+    while True:
+        db.connect()
+
+        data = twitch_api.get_twitch_data(db)
+
+        curr_game = db.get_evar(db.CURR_GAME)
+        curr_followers = db.get_evar(db.CURR_FOLLOWERS)
+
+        new_game = data["game_name"]
+
+        if new_game != curr_game:
+            db.set_evar(db.CURR_GAME, new_game)
+            sql = "INSERT INTO EVENTS (ev_type, ev_extra) VALUES " + \
+                f"('GAMECHANGE', '{new_game}')"
+            db.query(sql)
+
+        new_follows = data["follower_count"]
+
+        if  curr_followers == "" or new_follows > int(curr_followers):
+            db.set_evar(db.CURR_FOLLOWERS, new_follows)
+            runs = new_follows
+            if curr_followers != "":
+                runs = new_follows = curr_followers
+            for x in range(runs):
+                sql = "INSERT INTO EVENTS (ev_type, ev_extra) VALUES " + \
+                    f"('FOLLOW', '{runs}')"
+                db.query(sql)
+
+        db.disconnect()
+        time.sleep(5)

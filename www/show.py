@@ -21,13 +21,16 @@ class Show():
             "RESUB": self.run_resub,
             "GIFTSUB": self.run_giftsub,
             "MYSTERYSUB": self.run_mysterysub,
-            "CONTINUESUB": self.run_continuesub
+            "CONTINUESUB": self.run_continuesub,
+            "GAMECHANGE": self.run_gamechange,
+            "FOLLOW": self.run_follow,
         }
 
     def run(self, event, db, pixels):
         if not event:
             self.run_default(event, db, pixels)
             return
+        
         # event = (id, ev_type, ev_extra, importance)
         ev_type = event[1]
         if ev_type in self.functions:
