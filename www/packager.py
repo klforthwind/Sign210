@@ -11,7 +11,7 @@ class Packager():
         # self.downloader.download("twitch_api.py")
 
         # main events / lights handler
-        # self.downloader.download("table_handler.py")
+        self.downloader.download("table_handler.py")
         self.downloader.download("show_functions.py")
         self.downloader.download("command.py")
         # self.downloader.download("db_conn.py")
@@ -38,6 +38,7 @@ class Packager():
         # self.downloader.download_img("imgs/gartic.png")
         # self.downloader.download_img("imgs/ghost.png")
         # self.downloader.download_img("imgs/golfball210.png")
+        # self.downloader.download_img("imgs/hearthstone.png")
         # self.downloader.download_img("imgs/jj.png")
         # self.downloader.download_img("imgs/justinirl.png")
         # self.downloader.download_img("imgs/kaeris.png")

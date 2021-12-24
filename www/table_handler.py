@@ -46,11 +46,12 @@ class TableHandler():
                 latest_entry = x[0]
             if ev_type in self.ev_priority:
                 priority = self.ev_priority[ev_type]
-                cmd = json.loads(x[2])['command'].lower()
-                if ev_type == "COMMAND" and cmd == "clear":
-                    priority = self.ev_priority["CLEAR"]
-                if ev_type == "COMMAND" and cmd == "allclear":
-                    priority = self.ev_priority["ALLCLEAR"]
+                if ev_type == "COMMAND":
+                    cmd = json.loads(x[2])['command'].lower()
+                    if cmd == "clear":
+                        priority = self.ev_priority["CLEAR"]
+                    if cmd == "allclear":
+                        priority = self.ev_priority["ALLCLEAR"]
                 sql = "INSERT INTO P_QUEUE (ev_type, ev_extra, importance) VALUES " + \
                     f"('{ev_type}', '{x[2]}', {priority})"
                 db.query(sql)

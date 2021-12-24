@@ -4,6 +4,7 @@ from random import randint
 from command import *
 import time
 import os
+import re
 
 class Show():
 
@@ -38,22 +39,21 @@ class Show():
         curr_strip = db.get_evar(db.CURR_STRIP)
         default_strip = db.get_evar(db.DEF_STRIP)
 
-        hat_color = {
-            "mariohat":(255,0,0),
-            "luigihat":(0,255,0),
-            "waluigihat":(75,0,130),
-            "wariohat":(200,200,0),
-            "forthhat":(0,0,255),
-            "cheppyhat":(255,89,0),
-            "jjhat":(255,0,0)
-        }
+        r,g,b=255,0,0
+
+        pixel_r = "([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])"
+        rgb_pattern = re.compile(f"^{pixel_r},{pixel_r},{pixel_r}$")
+        if rgb_pattern.match(default_strip):
+            x = default_strip.split(",")
+            r,g,b=map(int, x)
+        
 
         strip = []
         for x in range(124):
             if x <= 23:
                 strip.append((200,200,200))
             else:
-                strip.append(hat_color[default_strip])
+                strip.append((r,g,b))
 
         if curr_strip != default_strip:
             pixels.set_strip(strip)
