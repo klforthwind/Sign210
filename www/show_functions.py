@@ -109,7 +109,7 @@ def slow_rainbow(event, db, pixels):
     while time.time() < end_time:
         color = wheel(j & 255)
         pixels.show(f"star/star{(j//4)%5+1}.png", [color]*124)
-        time.sleep(0.01)
+        time.sleep(0.0125)
         j+=2
 
 #
@@ -125,7 +125,7 @@ def fast_rainbow(event, db, pixels):
     end_time = time.time() + 10
     while time.time() < end_time:
         color = colors[(j%7)]
-        pixels.show(f"star/star{(j//4)%5+1}.png", [color]*124)
+        pixels.show(f"star/star{(j//2)%5+1}.png", [color]*124)
         time.sleep(0.025)
         j+=1
 
