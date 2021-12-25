@@ -34,7 +34,7 @@ class TableHandler():
         db.execute(f"DELETE FROM P_QUEUE WHERE id={ev[0]}")
         
         return ev
-    
+
     def process_events(self, db):
         # [(id, ev_type, ev_extra)]
         res = db.query("SELECT * FROM EVENTS")
