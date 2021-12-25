@@ -27,3 +27,9 @@ def get_strip(db):
         else:
             strip.append((r,g,b))
     return strip
+
+def set_default(event, db, pixels):
+    def_matrix = db.get_evar(db.DEF_MAT)
+    strip = get_strip(db)
+
+    pixels.show(def_matrix, strip)

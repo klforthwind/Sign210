@@ -112,10 +112,12 @@ def loading_raid(event, db, pixels):
 #
 #
 def animate_raid(event, db, pixels):
-    if event[2]['flags']['vip'] or event[2]['flags']['broadcaster']:
+    if False:
         rick(event, db, pixels)
     else:
         loading_raid(event, db, pixels)
+
+    set_default(event, db, pixels)
 
 #
 #
@@ -141,6 +143,8 @@ def slow_rainbow(event, db, pixels):
         time.sleep(0.0125)
         j+=2
 
+    set_default(event, db, pixels)
+
 #
 #
 #
@@ -157,6 +161,8 @@ def fast_rainbow(event, db, pixels):
         pixels.show(f"star/star{(j//2)%5+1}.png", [color]*124)
         time.sleep(0.025)
         j+=1
+
+    set_default(event, db, pixels)
 
 #
 #
@@ -175,12 +181,14 @@ def slow_rainbow_shift(event, db, pixels):
         time.sleep(0.025)
         j+=1
 
+    set_default(event, db, pixels)
 
 #
 #
 #
 #
 def show_game(db, pixels, game_title, wait_time):
+    db.set_evar(db.CURR_MAT, "")
     strip = get_strip(db)
 
     games = {
@@ -196,7 +204,8 @@ def show_game(db, pixels, game_title, wait_time):
             pixels.show(games[game], strip)
             time.sleep(wait_time)
             break
-    pass
+    
+    set_default(event, db, pixels)
 
 def cheer(event, db, pixels):
     colors = [(153,51,255),(0,0,255),(0,255,0)]
@@ -214,6 +223,8 @@ def cheer(event, db, pixels):
         pixels.show("bits.png", arr)
 
         time.sleep(0.1)
+    
+    set_default(event, db, pixels)
 
 
 

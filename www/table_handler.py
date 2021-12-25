@@ -42,7 +42,6 @@ class TableHandler():
 
         latest_entry = 0
         for x in res:
-            print(x)
             ev_type = x[1]
             if x[0] > latest_entry:
                 latest_entry = x[0]

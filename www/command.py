@@ -56,7 +56,6 @@ def exec_command(event, db, pixels):
                     db.set_evar(db.DEF_STRIP, msg)
         if cmd == 'ep' or cmd == 'episode':
             db.set_evar(db.CURR_MAT, "")
-            db.set_evar(db.CURR_STRIP, "")
 
             strip = get_strip(db)
             pixels.show(db.get_evar(db.DEF_MAT), strip)
@@ -66,9 +65,25 @@ def exec_command(event, db, pixels):
             ep_num = (today - start).days + 1
             for x in range(7, -46, -1):
                 pixels.matrix.fill(0x000000)
-                pixels.matrix.text(f"EP. {ep_num}", x, (x//2)%2, 0xFF0000)
+                pixels.matrix.text(f"EP. {ep_num}", x, (x//2)%2, int('0x%02x%02x%02x' % strip[120], 16))
                 pixels.matrix.display()
                 time.sleep(0.1)
+            set_default(event, db, pixels)
+        if cmd == 'temps':
+            db.set_evar(db.CURR_MAT, "")
+
+            strip = get_strip(db)
+            pixels.show(db.get_evar(db.DEF_MAT), strip)
+
+            temp = os.popen("vcgencmd measure_temp").read().split("=")[1]
+            print(temp)
+            for x in range(7, -46, -1):
+                pixels.matrix.fill(0x000000)
+                pixels.matrix.text(f"{temp}", x, 1, int('0x%02x%02x%02x' % strip[120], 16))
+                pixels.matrix.display()
+                time.sleep(0.1)
+            set_default(event, db, pixels)
+
 
         hats = {
             'mariohat': ("m.png", "255,0,0"),
