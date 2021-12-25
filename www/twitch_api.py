@@ -58,7 +58,6 @@ class TwitchAPI():
             f"&client_secret={self.CLIENT_SECRET}" + \
             "&grant_type=client_credentials'"
         result = json.loads(os.popen(curl_req).read())
-        print(result["access_token"])
         db.set_evar(db.ACCESS_TOKEN, result["access_token"])
 
 if __name__ == "__main__":
@@ -86,7 +85,7 @@ if __name__ == "__main__":
             db.set_evar(db.CURR_FOLLOWERS, new_follows)
             runs = new_follows
             if curr_followers != "":
-                runs = new_follows = curr_followers
+                runs = new_follows - curr_followers
             for x in range(runs):
                 sql = "INSERT INTO EVENTS (ev_type, ev_extra) VALUES " + \
                     f"('FOLLOW', '{runs}')"
