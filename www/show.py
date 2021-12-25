@@ -38,15 +38,14 @@ class Show():
         curr_matrix = db.get_evar(db.CURR_MAT)
         default_matrix = db.get_evar(db.DEF_MAT)
 
-        needs_change = (curr_matrix != default_matrix or 
-            curr_strip != default_strip)
+        changed_matrix = curr_matrix != default_matrix
+        changed_strip = curr_strip != default_strip
 
-        if needs_change:
+        if changed_matrix or changed_strip:
             db.set_evar(db.CURR_MAT, default_matrix)
             db.set_evar(db.CURR_STRIP, default_strip)
 
             strip = get_strip(db)
-
             pixels.show(default_matrix, strip)
 
     def run_raid(self, event, db, pixels):
@@ -57,7 +56,7 @@ class Show():
             loading_raid(event, db, pixels)
 
     def run_gamechange(self, event, db, pixels):
-        show_game(event[2], pixels, 8)
+        show_game(db, pixels, event[2], 8)
     
     def run_follow(self, event, db, pixels):
         pulse(db, pixels, "follow.png", [14,2,36], [153,51,255], 8)
@@ -81,21 +80,12 @@ class Show():
         slow_rainbow_shift(event, db, pixels)
     
     def run_command(self, event, db, pixels):
-        ev_extra = event[2]
-        cmd = ev_extra['command'].lower()
-        msg = ev_extra['message'].upper()
+        cmd = event[2]['command'].lower()
+        msg = event[2]['message'].upper()
+        print(event[2])
 
         if cmd == "mod":
             if msg in self.functions:
                 self.functions[msg](event, db, pixels)
 
         exec_command(event, db, pixels)
-
-    def run_realm(self, event, db, pixels):
-        pass
-
-    def run_reward(self, event, db, pixels):
-        pass
-
-    def run_chat(self, event, db, pixels):
-        pass

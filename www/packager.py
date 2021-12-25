@@ -12,12 +12,12 @@ class Packager():
 
         # main events / lights handler
         # self.downloader.download("table_handler.py")
-        # self.downloader.download("show_functions.py")
+        self.downloader.download("show_functions.py")
         # self.downloader.download("extra_funcs.py")
-        # self.downloader.download("command.py")
+        self.downloader.download("command.py")
         # self.downloader.download("db_conn.py")
         # self.downloader.download("lights.py")
-        # self.downloader.download("show.py")
+        self.downloader.download("show.py")
         # self.downloader.download("main.py")
 
         # images - directory nonexistent

@@ -151,8 +151,22 @@ def slow_rainbow_shift(event, db, pixels):
 #
 #
 #
-def show_game(game, pixels, wait_time):
+def show_game(db, pixels, game_title, wait_time):
+    strip = get_strip(db)
 
+    games = {
+        "Minecraft": "mariograss.png",
+        "Gartic Phone": "gartic.png",
+        "Valheim": "valheim.png",
+        "Golf": "golfball210.png",
+        "Subnautica": "subnautica.png"
+    }
+
+    for game in games:
+        if game in game_title:
+            pixels.show(games[game], strip)
+            time.sleep(wait_time)
+            break
     pass
 
 def cheer(event, db, pixels):
