@@ -77,7 +77,7 @@ if __name__ == "__main__":
             db.set_evar(db.CURR_GAME, new_game)
             sql = "INSERT INTO EVENTS (ev_type, ev_extra) VALUES " + \
                 f"('GAMECHANGE', '{new_game}')"
-            db.query(sql)
+            db.execute(sql)
 
         new_follows = data["follower_count"]
 
@@ -89,7 +89,7 @@ if __name__ == "__main__":
             for x in range(runs):
                 sql = "INSERT INTO EVENTS (ev_type, ev_extra) VALUES " + \
                     f"('FOLLOW', '{runs}')"
-                db.query(sql)
+                db.execute(sql)
 
         db.disconnect()
         time.sleep(5)

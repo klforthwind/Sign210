@@ -25,7 +25,8 @@ class TableHandler():
         if len(res) == 0:
             return
         ev = res[0]
-        ev = (ev[0], ev[1], json.loads(ev[2]), ev[3])
+        if ev[1] != "FOLLOW" and ev[1] != "GAMECHANGE":
+            ev = (ev[0], ev[1], json.loads(ev[2]), ev[3])
 
         if self.should_clear(ev):
             db.execute(f"DELETE FROM P_QUEUE WHERE 1=1")
@@ -41,6 +42,7 @@ class TableHandler():
 
         latest_entry = 0
         for x in res:
+            print(x)
             ev_type = x[1]
             if x[0] > latest_entry:
                 latest_entry = x[0]
