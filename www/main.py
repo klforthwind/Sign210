@@ -4,7 +4,7 @@ from lights import *
 from show import *
 import time
 
-UPDATES_WAIT_TIME_SEC = 300
+UPDATES_WAIT_TIME_SEC = 15
 
 table = TableHandler()
 pixels = Lights()

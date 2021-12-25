@@ -63,5 +63,5 @@ class DBConn():
     def reset_config(self):
         self.set_evar(self.CURR_MAT, "")
         self.set_evar(self.CURR_STRIP, "")
-        self.set_evar(self.DEF_MAT, "m.png")
+        self.set_evar(self.DEF_MAT, "jj.png")
         self.set_evar(self.DEF_STRIP, "255,0,0")
