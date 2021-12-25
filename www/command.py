@@ -12,16 +12,18 @@ def exec_command(event, db, pixels):
 
     # mod / broadcaster only commands
     if ev_extra['flags']['mod'] or ev_extra['flags']['broadcaster']:
-        if cmd == 'ac':
+        if cmd == 'ac' or cmd == 'addcommand':
             split_msg = msg.split()
             if len(split_msg) == 2:
                 if pattern.match(split_msg[0]) and pattern.match(split_msg[1]):
                     res = db.query(f"SELECT * FROM COMMANDS WHERE command = '{split_msg[0]}'")
+                    if len(res):
+                        pixels.show("ghost.png", [(255,255,255)]*124)
                     if len(res) == 0:
                         sql = "INSERT INTO COMMANDS (command, pic_name) VALUES " + \
                         f"('{split_msg[0]}', '{split_msg[1]}')"
                         db.query(sql)
-        if cmd == 'dc':
+        if cmd == 'dc' or cmd == 'deletecommand':
             if len(msg.split()) == 1:
                 if pattern.match(msg):
                     db.execute(f"DELETE FROM COMMANDS WHERE command = '{msg}'")
@@ -34,10 +36,22 @@ def exec_command(event, db, pixels):
         if cmd == 'showall':
             db.set_evar(db.CURR_MAT, "")
             res = db.query(f"SELECT * FROM COMMANDS ORDER BY command")
+            print(res)
             if len(res) > 0:
+                r,g,b = 255,0,0
+                strip_color = db.get_evar(db.DEF_STRIP)
+                if rgb_pattern.match(strip_color):
+                    r,g,b = map(int, strip_color.split(","))
+                
+                strip = []
+                for z in range(124):
+                    if z <= 23:
+                        strip.append((200,200,200))
+                    else:
+                        strip.append((r,g,b))
+
                 for x in res:
-                    pixels.show_image(x[1])
-                    pixels.keep_strip()
+                    pixels.show(x[1], strip)
                     time.sleep(0.5)
         if cmd == 'setdefmatrix':
             if len(msg.split()) == 1:
@@ -54,7 +68,6 @@ def exec_command(event, db, pixels):
         if cmd == 'setdefstrip':
             if len(msg.split()) == 1:
                 if rgb_pattern.match(msg):
-                    print("YIKE")
                     db.set_evar(db.CURR_STRIP, "")
                     db.set_evar(db.DEF_STRIP, msg)
 
@@ -76,7 +89,23 @@ def exec_command(event, db, pixels):
     if pattern.match(cmd):
         res = db.query(f"SELECT * FROM COMMANDS WHERE command = '{cmd}'")
         if len(res) > 0:
-            pixels.show_image(res[0][1])
+
+            r,g,b = 255,0,0
+            strip_color = db.get_evar(db.DEF_STRIP)
+            if rgb_pattern.match(strip_color):
+                r,g,b = map(int, strip_color.split(","))
+            
+            strip = []
+            for x in range(124):
+                if x <= 23:
+                    strip.append((200,200,200))
+                else:
+                    strip.append((r,g,b))
+
+            print(cmd)
+            
+            pixels.show(res[0][1], strip)
+
             db.set_evar(db.CURR_MAT, res[0][1])
 
             time.sleep(4)

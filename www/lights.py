@@ -6,6 +6,7 @@ from adafruit_pixel_framebuf import PixelFramebuffer
 from PIL import Image
 import neopixel
 import board
+import re
 
 class Lights():
 
@@ -25,7 +26,7 @@ class Lights():
             self.pixels, self.PIXEL_WIDTH, self.PIXEL_HEIGHT, reverse_y=True
         )
     
-    def set_matrix(self, pic_name):
+    def __set_matrix(self, pic_name):
         # Make a black background in RGBA Mode
         image = Image.new("RGBA", (self.PIXEL_WIDTH, self.PIXEL_HEIGHT))
 
@@ -37,30 +38,14 @@ class Lights():
         # Convert the image to RGB and display it
         self.matrix.image(image.convert("RGB"))
 
-    def show_image(self, pic_name):
-        self.set_matrix(pic_name)
-
+    def __show_image(self, pic_name):
+        self.__set_matrix(pic_name)
         self.matrix.display()
-        self.keep_strip()
 
-    def keep_strip(self):
-        self.pixels.show()
-
-    def set_strip(self, arr):
+    def __set_strip(self, arr):
         for i in range(self.STRIP_LEN):
             self.pixels[self.MATRIX_OFFSET + i] = arr[i]
-
-    def color_strip(self, arr):
-        self.set_strip(arr)
-        self.pixels.show()
-
-    def color_all(self, arr):
-        for i in range(self.NUM_PIXELS):
-            self.pixels[i] = arr[i]
-        self.pixels.show()
     
-    def set_pixel(self, num, val):
-        self.pixels[num] = val
-    
-    def get_pixels(self):
-        return self.pixels
+    def show(self, pic_name, strip_arr):
+        self.__set_strip(strip_arr)
+        self.__show_image(pic_name)

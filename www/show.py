@@ -39,34 +39,32 @@ class Show():
         curr_strip = db.get_evar(db.CURR_STRIP)
         default_strip = db.get_evar(db.DEF_STRIP)
 
-        r,g,b=255,0,0
-
-        pixel_r = "([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])"
-        rgb_pattern = re.compile(f"^{pixel_r},{pixel_r},{pixel_r}$")
-        if rgb_pattern.match(default_strip):
-            x = default_strip.split(",")
-            r,g,b=map(int, x)
-        
-
-        strip = []
-        for x in range(124):
-            if x <= 23:
-                strip.append((200,200,200))
-            else:
-                strip.append((r,g,b))
-
-        if curr_strip != default_strip:
-            pixels.set_strip(strip)
-            pixels.keep_strip()
-
         curr_matrix = db.get_evar(db.CURR_MAT)
         default_matrix = db.get_evar(db.DEF_MAT)
-        
-        if curr_matrix != default_matrix:
-            pixels.set_strip(strip)
+
+        needs_change = (curr_matrix != default_matrix or 
+            curr_strip != default_strip)
+
+        if needs_change:
             db.set_evar(db.CURR_MAT, default_matrix)
-            pixels.show_image(default_matrix)
-            pixels.keep_strip()
+            db.set_evar(db.CURR_STRIP, default_strip)
+
+            r,g,b = 255,0,0
+
+            pixel_r = "([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])"
+            rgb_pattern = re.compile(f"^{pixel_r},{pixel_r},{pixel_r}$")
+            if rgb_pattern.match(default_strip):
+                x = default_strip.split(",")
+                r,g,b=map(int, x)
+            
+            strip = []
+            for x in range(124):
+                if x <= 23:
+                    strip.append((200,200,200))
+                else:
+                    strip.append((r,g,b))
+
+            pixels.show(default_matrix, strip)
 
     def run_raid(self, event, db, pixels):
         # if event[2]['flags']['vip'] or event[2]['flags']['broadcaster']:

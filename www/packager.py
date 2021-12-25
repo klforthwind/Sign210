@@ -15,9 +15,11 @@ class Packager():
         self.downloader.download("show_functions.py")
         self.downloader.download("command.py")
         # self.downloader.download("db_conn.py")
-        # self.downloader.download("lights.py")
+        self.downloader.download("lights.py")
         self.downloader.download("show.py")
         # self.downloader.download("main.py")
+
+        # os.system("rm /home/pi/sign210/main/imgs/*.png")
 
         # images - directory nonexistent
         # self.downloader.download_img("imgs/star/star1.png")
@@ -48,7 +50,6 @@ class Packager():
         # self.downloader.download_img("imgs/mariograss.png")
         # self.downloader.download_img("imgs/mcpick.png")
         # self.downloader.download_img("imgs/micro_mage.png")
-        # self.downloader.download_img("imgs/off.png")
         # self.downloader.download_img("imgs/panda.png")
         # self.downloader.download_img("imgs/pepsi.png")
         # self.downloader.download_img("imgs/pokeball.png")
