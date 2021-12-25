@@ -19,8 +19,6 @@ class Packager():
         self.downloader.download("show.py")
         # self.downloader.download("main.py")
 
-        # os.system("rm /home/pi/sign210/main/imgs/*.png")
-
         # images - directory nonexistent
         # self.downloader.download_img("imgs/star/star1.png")
         # self.downloader.download_img("imgs/star/star2.png")
