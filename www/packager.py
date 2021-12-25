@@ -20,7 +20,13 @@ class Packager():
         self.downloader.download("show.py")
         # self.downloader.download("main.py")
 
+
         # images - directory nonexistent
+        # os.system("mkdir imgs/rick")
+        # for x in range(21):
+        #     self.downloader.download_img(f"imgs/rick/{x}.png")
+
+        # os.system("mkdir imgs/star")
         # self.downloader.download_img("imgs/star/star1.png")
         # self.downloader.download_img("imgs/star/star2.png")
         # self.downloader.download_img("imgs/star/star3.png")

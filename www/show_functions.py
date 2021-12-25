@@ -8,44 +8,63 @@ import time
 #
 #
 #
-def snake(events, db, pixels):
-    strip_len = pixels.STRIP_LEN
-    color = (255,0,0)
-    if event[2]['user'].lower() == "beta64":
-        color = (255,0,255)
-    start = randint(0,strip_len-1)
-    size = 5
+def rick(event, db, pixels):
+    db.set_evar(db.CURR_MAT, "")
+    j = 0
+    end_time = time.time() + 10
+    while time.time() < end_time:
+        color = wheel(j & 255)
+        pixels.show(f"rick/{(j//8)%21}.png", [color]*124)
+        time.sleep(0.0125)
+        j+=2
 
-    apple = randint(0,strip_len-1)
+#
+#
+#
+#
+# def snake(event, db, pixels):
+#     strip_len = pixels.STRIP_LEN
+#     color = (255,0,0)
+#     if event[2]['user'].lower() == "beta64":
+#         color = (255,0,255)
+#     start = randint(0,strip_len-1)
+#     size = 5
 
-    while size < strip_len:
-        start = (start + 1) % strip_len
-        if apple == start:
-            size += 32
-            if start + size >= strip_len:
-                apple = randint((start + size) % strip_len, start-1)
-            else:
-                if start != 0:
-                    apple = (randint(0, start-1), randint(start+size,strip_len-1))[randint(0,1)]
-                else:
-                    apple = randint(start+size,strip_len-1)
-        strip = []
-        for x in range(124):
-            if start + size >= strip_len:
-                if x <= (start + size) % strip_len:
-                    strip.append(color)
-                elif x >= start:
-                    strip.append(color)
-                else:
-                    strip.append((0,0,0))
-            else:
-                if start <= x < start+size:
-                    strip.append(color)
-                else:
-                    strip.append((0,0,0))
+#     apple = randint(0,strip_len-1)
+
+#     # while size < strip_len:
+#     while size < 10:
+#         old_start = start
+#         start = (start + 5) % strip_len
+#         if start >= apple >= old_start:
+#             size += 1
+#             if start + size >= strip_len:
+#                 apple = randint((start + size) % strip_len, start-1)
+#             else:
+#                 if start != 0:
+#                     apple = (randint(0, start-1), randint(start+size,strip_len-1))[randint(0,1)]
+#                 else:
+#                     apple = randint(start+size,strip_len-1)
         
-        pixels.color_strip(strip)
-        time.sleep(0.01)
+#         strip = []
+#         for x in range(124):
+#             if x == apple:
+#                 strip.append(color)
+#             elif start + size >= strip_len:
+#                 if x <= (start + size) % strip_len:
+#                     strip.append(color)
+#                 elif x >= start:
+#                     strip.append(color)
+#                 else:
+#                     strip.append((0,0,0))
+#             else:
+#                 if start <= x < start+size:
+#                     strip.append(color)
+#                 else:
+#                     strip.append((0,0,0))
+        
+#         pixels.color_strip(strip)
+#         time.sleep(0.01)
 
 #
 #
@@ -87,6 +106,16 @@ def loading_raid(event, db, pixels):
     
     pixels.show("raid.png", strip)
     time.sleep(2)
+
+#
+#
+#
+#
+def animate_raid(event, db, pixels):
+    if event[2]['flags']['vip'] or event[2]['flags']['broadcaster']:
+        rick(event, db, pixels)
+    else:
+        loading_raid(event, db, pixels)
 
 #
 #

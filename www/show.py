@@ -47,11 +47,7 @@ class Show():
             pixels.show(default_matrix, strip)
 
     def run_raid(self, event, db, pixels):
-        # if event[2]['flags']['vip'] or event[2]['flags']['broadcaster']:
-        if False:
-            snake(event, db, pixels)
-        else:
-            loading_raid(event, db, pixels)
+        animate_raid(event, db, pixels)
 
     def run_gamechange(self, event, db, pixels):
         show_game(db, pixels, event[2], 8)
