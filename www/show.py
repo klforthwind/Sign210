@@ -76,8 +76,11 @@ class Show():
     def run_command(self, event, db, pixels):
         cmd = event[2]['command'].lower()
         msg = event[2]['message'].upper()
+        
+        flags = event[2]['flags']
+        mod_status = flags['mod'] or flags['broadcaster']
 
-        if cmd == "mod":
+        if cmd == "mod" and mod_status:
             if msg in self.functions:
                 self.functions[msg](event, db, pixels)
 

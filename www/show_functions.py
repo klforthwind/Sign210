@@ -112,7 +112,7 @@ def loading_raid(event, db, pixels):
 #
 #
 def animate_raid(event, db, pixels):
-    if False:
+    if event[2]['flags']['vip'] or event[2]['flags']['broadcaster']:
         rick(event, db, pixels)
     else:
         loading_raid(event, db, pixels)
