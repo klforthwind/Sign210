@@ -6,16 +6,15 @@ LATEST_PY = "packager.py"
 
 downloader = Downloader()
 
-db = DBConn()
-db.connect()
+try:
+    db = DBConn()
+    db.connect()
 
-db.set_evar(db.DEF_STRIP, "255,0,0")
-db.set_evar(db.CURR_STRIP, "")
+    db.reset_config()
 
-db.set_evar(db.DEF_MAT, "jj.png")
-db.set_evar(db.CURR_MAT, "")
-
-db.disconnect()
+    db.disconnect()
+except:
+    pass
 
 while True:
     try:
