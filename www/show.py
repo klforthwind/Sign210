@@ -2,8 +2,6 @@
 from show_functions import *
 from extra_funcs import *
 from command import *
-import time
-import os
 
 class Show():
 
@@ -82,7 +80,6 @@ class Show():
     def run_command(self, event, db, pixels):
         cmd = event[2]['command'].lower()
         msg = event[2]['message'].upper()
-        print(event[2])
 
         if cmd == "mod":
             if msg in self.functions:
