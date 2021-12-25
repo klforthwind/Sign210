@@ -1,9 +1,21 @@
 from downloader import *
+from db_conn import *
 import os
 
 LATEST_PY = "packager.py"
 
 downloader = Downloader()
+
+db = DBConn()
+db.connect()
+
+db.set_evar(db.DEF_STRIP, "255,0,0")
+db.set_evar(db.CURR_STRIP, "")
+
+db.set_evar(db.DEF_MAT, "jj.png")
+db.set_evar(db.CURR_MAT, "")
+
+db.disconnect()
 
 while True:
     try:
