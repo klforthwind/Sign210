@@ -49,3 +49,12 @@ class Lights():
     def show(self, pic_name, strip_arr):
         self.__set_strip(strip_arr)
         self.__show_image(pic_name)
+    
+    def color_strip(self, arr):
+        self.__set_strip(arr)
+        self.pixels.show()
+    
+    def color_all(self, arr):
+        for i in range(self.NUM_PIXELS):
+            self.pixels[i] = arr[i]
+        self.pixels.show()

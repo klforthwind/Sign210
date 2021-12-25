@@ -1,4 +1,6 @@
 # sudo apt install numpy-python
+from random import randint
+from extra_funcs import *
 import numpy as np
 import time
 
@@ -50,20 +52,12 @@ def snake(events, db, pixels):
 #
 #
 def loading_raid(event, db, pixels):
+    db.set_evar(db.CURR_MAT, "raid.png")
     strip_len = pixels.STRIP_LEN
-    hat_color = {
-        "mariohat":(255,0,0),
-        "luigihat":(0,255,0),
-        "waluigihat":(75,0,130),
-        "wariohat":(200,200,0),
-        "forthhat":(0,0,255),
-        "cheppyhat":(255,89,0),
-        "jjhat":(255,0,0)
-    }
+    strip = get_strip(db)
 
-    color = hat_color[db.get_evar(db.DEF_STRIP)]
+    color = strip[123]
 
-    red = (255, 0, 0)
     white = (200,200,200)
 
     strip_len = 4
@@ -91,8 +85,7 @@ def loading_raid(event, db, pixels):
         endpx += strip_len
         ct+=1
     
-    pixels.show_image("raid.png")
-    db.set_evar(db.CURR_MAT, "raid.png")
+    pixels.show("raid.png", strip)
     time.sleep(2)
 
 #
@@ -101,10 +94,9 @@ def loading_raid(event, db, pixels):
 #
 def pulse(db, pixels, image, rgb1_list, rgb2_list, run_time):
     db.set_evar(db.CURR_MAT, "")
-    pixels.show_image(image)
     low = np.array(rgb1_list)
     high = np.array(rgb2_list)
-    lerp_colors(pixels, low, high, run_time)
+    lerp_colors(pixels, low, high, image, run_time)
 
 #
 #
@@ -115,9 +107,8 @@ def slow_rainbow(event, db, pixels):
     j = 0
     end_time = time.time() + 10
     while time.time() < end_time:
-        pixels.show_image(f"star/star{(j//4)%5+1}.png")
         color = wheel(j & 255)
-        pixels.color_strip([color]*124)
+        pixels.show(f"star/star{(j//4)%5+1}.png", [color]*124)
         time.sleep(0.01)
         j+=2
 
@@ -133,9 +124,8 @@ def fast_rainbow(event, db, pixels):
 
     end_time = time.time() + 10
     while time.time() < end_time:
-        pixels.show_image(f"star/star{(j//4)%5+1}.png")
         color = colors[(j%7)]
-        pixels.color_strip([color]*124)
+        pixels.show(f"star/star{(j//4)%5+1}.png", [color]*124)
         time.sleep(0.025)
         j+=1
 
@@ -148,12 +138,11 @@ def slow_rainbow_shift(event, db, pixels):
     j = 0
     end_time = time.time() + 10
     while time.time() < end_time:
-        pixels.show_image(f"star/star{(j//4)%5+1}.png")
         strip = []
         for x in range(124):
             color = wheel((int(x * 255 / 124+j)%255))
             strip.append(color)
-        pixels.color_strip(strip)
+        pixels.show(f"star/star{(j//4)%5+1}.png", strip)
         time.sleep(0.025)
         j+=1
 
@@ -170,7 +159,6 @@ def cheer(event, db, pixels):
     colors = [(153,51,255),(0,0,255),(0,255,0)]
     offset = 0
 
-    pixels.show_image("bits.png")
     db.set_evar(db.CURR_MAT, "bits.png")
 
     end_time = time.time() + 10
@@ -180,7 +168,7 @@ def cheer(event, db, pixels):
         for x in range(124):
             arr.append(colors[((offset + x)// 3) % 3])
         
-        pixels.color_strip(arr)
+        pixels.show("bits.png", arr)
 
         time.sleep(0.1)
 
@@ -191,7 +179,7 @@ def cheer(event, db, pixels):
 #
 #
 #
-def lerp_colors(pixels, rgb1, rgb2, run_time):
+def lerp_colors(pixels, rgb1, rgb2, pic_name, run_time):
     diff = rgb2 - rgb1
     change = diff
     j = 0
@@ -208,7 +196,7 @@ def lerp_colors(pixels, rgb1, rgb2, run_time):
             rgb = rgb1 + change * rela_pt
             color = tuple(map(int, rgb))
         
-        pixels.color_strip([color]*124)
+        pixels.show(pic_name, [color]*124)
         j += 1
         time.sleep(0.025)
 

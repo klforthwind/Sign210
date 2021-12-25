@@ -1,10 +1,9 @@
 # sudo apt install numpy-python
 from show_functions import *
-from random import randint
+from extra_funcs import *
 from command import *
 import time
 import os
-import re
 
 class Show():
 
@@ -16,9 +15,6 @@ class Show():
             "MYSTERYSUB": self.run_mysterysub,
             "CONTINUESUB": self.run_continuesub,
             "GAMECHANGE": self.run_gamechange,
-            "CUSTOMREWARD": self.run_reward,
-            "JOINREALM": self.run_realm,
-            "NORMALCHAT": self.run_chat,
             "COMMAND": self.run_command,
             "FOLLOW": self.run_follow,
             "CHEER": self.run_cheer,
@@ -49,20 +45,7 @@ class Show():
             db.set_evar(db.CURR_MAT, default_matrix)
             db.set_evar(db.CURR_STRIP, default_strip)
 
-            r,g,b = 255,0,0
-
-            pixel_r = "([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])"
-            rgb_pattern = re.compile(f"^{pixel_r},{pixel_r},{pixel_r}$")
-            if rgb_pattern.match(default_strip):
-                x = default_strip.split(",")
-                r,g,b=map(int, x)
-            
-            strip = []
-            for x in range(124):
-                if x <= 23:
-                    strip.append((200,200,200))
-                else:
-                    strip.append((r,g,b))
+            strip = get_strip(db)
 
             pixels.show(default_matrix, strip)
 
@@ -100,21 +83,11 @@ class Show():
     def run_command(self, event, db, pixels):
         ev_extra = event[2]
         cmd = ev_extra['command'].lower()
-        
-        if cmd == "cheer":
-            self.run_cheer(event, db, pixels)
-        if cmd == "raidtime":
-            self.run_raid(event, db, pixels)
-        if cmd == "sub":
-            self.run_sub(event, db, pixels)
-        if cmd == "myst":
-            self.run_mysterysub(event, db, pixels)
-        if cmd == "foll":
-            self.run_follow(event,db,pixels)
-        if cmd == "gifty":
-            self.run_giftsub(event,db,pixels)
-        if cmd == "continue":
-            self.run_continuesub(event,db,pixels)
+        msg = ev_extra['message'].upper()
+
+        if cmd == "mod":
+            if msg in self.functions:
+                self.functions[msg](event, db, pixels)
 
         exec_command(event, db, pixels)
 
