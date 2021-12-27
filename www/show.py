@@ -27,7 +27,8 @@ class Show():
         
         # event = (id, ev_type, ev_extra, importance)
         ev_type = event[1]
-        ev = event
+        ev = list(event)
+
         if ev_type in self.functions:
             self.functions[ev_type](ev, db, pixels)
 

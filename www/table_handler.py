@@ -28,7 +28,7 @@ class TableHandler():
             return
         
         ev = list(res[0])
-        if 'flags' in ev[4]:
+        if ev[1] != "GAMECHANGE" and ev[1] != "FOLLOW":
             ev[4] = json.loads(ev[4])
 
         if self.should_clear(ev):
@@ -36,6 +36,8 @@ class TableHandler():
             return
 
         db.execute(f"DELETE FROM P_QUEUE WHERE id={ev[0]}")
+
+        print(ev)
 
         return ev
 
@@ -47,8 +49,9 @@ class TableHandler():
         if res_count == 0:
             return
 
-        latest_entry = res[res_count-1][0]
+        latest_id = res[res_count-1][0]
 
+        # [(id, ev_type, ev_cmd, ev_msg, ev_extra)]
         for x in res:
             if not valid_msg(x[2]) or not valid_msg(x[3]):
                 continue
@@ -65,7 +68,7 @@ class TableHandler():
                     f"VALUES ('{ev_type}', '{x[2]}', '{x[3]}', '{x[4]}', {priority})"
                 db.query(sql)
 
-        db.execute(f"DELETE FROM EVENTS WHERE id <= {latest_entry}")
+        db.execute(f"DELETE FROM EVENTS WHERE id <= {latest_id}")
 
     # event = (id, ev_type, ev_extra, importance)
     def should_clear(self, event):

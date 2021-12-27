@@ -11,7 +11,7 @@ class Packager():
         # self.downloader.download("twitch_api.py")
 
         # main events / lights handler
-        self.downloader.download("table_handler.py")
+        # self.downloader.download("table_handler.py")
         # self.downloader.download("show_functions.py")
         # self.downloader.download("extra_funcs.py")
         # self.downloader.download("command.py")

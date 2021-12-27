@@ -4,17 +4,19 @@ from lights import *
 from show import *
 import time
 
-UPDATES_WAIT_TIME_SEC = 30
+UPDATES_WAIT_TIME_SEC = 15
 
 table = TableHandler()
 pixels = Lights()
 show = Show()
 
 db = DBConn()
-db.connect()
 
 t_end = time.time() + UPDATES_WAIT_TIME_SEC
 while time.time() < t_end:
+    time.sleep(0.2)
+
+    db.connect()
 
     # process EVENTS table
     table.process_events(db)
@@ -25,4 +27,4 @@ while time.time() < t_end:
     # run event
     show.run(ev, db, pixels)
 
-db.disconnect()
+    db.disconnect()

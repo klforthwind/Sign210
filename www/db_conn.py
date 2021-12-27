@@ -8,7 +8,6 @@ import os
 
 class DBConn():
     # config variables
-    CURR_FOLLOWERS = "CURR_FOLLOWERS"
     ACCESS_TOKEN = "ACCESS_TOKEN"
     CURR_GAME = "CURR_GAME"
 

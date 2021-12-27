@@ -25,7 +25,7 @@ def rick(event, db, pixels):
 # def snake(event, db, pixels):
 #     strip_len = pixels.STRIP_LEN
 #     color = (255,0,0)
-#     if event[2]['user'].lower() == "beta64":
+#     if event[4]['user'].lower() == "beta64":
 #         color = (255,0,255)
 #     start = randint(0,strip_len-1)
 #     size = 5

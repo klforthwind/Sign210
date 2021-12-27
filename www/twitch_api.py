@@ -41,7 +41,12 @@ class TwitchAPI():
             -H 'Client-Id: {self.CLIENT_ID}'"
         
         result = json.loads(os.popen(follows_curl_req).read())
-        data["follower_count"] = result["total"]
+        follow_data = result['data']
+        follows = []
+        for user in follow_data:
+            follows.append(user['from_login'])
+
+        data["followers"] = follows
 
         return data
 
@@ -71,7 +76,6 @@ if __name__ == "__main__":
             data = twitch_api.get_twitch_data(db)
 
             curr_game = db.get_evar(db.CURR_GAME)
-            curr_followers = db.get_evar(db.CURR_FOLLOWERS)
 
             new_game = data["game_name"]
 
@@ -81,16 +85,16 @@ if __name__ == "__main__":
                     f"('GAMECHANGE', '{new_game}')"
                 db.execute(sql)
 
-            new_follows = data["follower_count"]
+            followers = data["followers"]
 
-            if  curr_followers == "" or new_follows > int(curr_followers):
-                db.set_evar(db.CURR_FOLLOWERS, new_follows)
-                runs = new_follows
-                if curr_followers != "":
-                    runs = new_follows - curr_followers
-                for x in range(runs):
+            for f in followers:
+                sql = f"SELECT * FROM FOLLOWERS WHERE user_login='{f}'"
+                res = db.query(sql)
+                if len(res) == 0:
                     sql = "INSERT INTO EVENTS (ev_type, ev_extra) VALUES " + \
-                        f"('FOLLOW', '{runs}')"
+                        f"('FOLLOW', '{f}')"
+                    db.execute(sql)
+                    sql = f"INSERT INTO FOLLOWERS (user_login) VALUES ('{f}')"
                     db.execute(sql)
 
             db.disconnect()
