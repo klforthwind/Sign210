@@ -20,11 +20,13 @@ class TableHandler():
     }
 
     def get_event(self, db):
-        # [(id, ev_type, ev_extra, importance)]
+        # [(id, ev_type, ev_cmd, ev_msg, ev_extra, importance)]
         res = db.query("SELECT * FROM P_QUEUE ORDER BY importance DESC")
         if len(res) == 0:
             return
         ev = res[0]
+        if 'flags' in ev:
+            ev = (ev[0], ev[1], ev[2], ev[3], json.loads(ev[4]), ev[5])
 
         if self.should_clear(ev):
             db.execute(f"DELETE FROM P_QUEUE WHERE 1=1")
@@ -48,19 +50,14 @@ class TableHandler():
                 fail=False
                 if ev_type == "COMMAND":
                     # print(x)
-                    try:
-                        cmd = x[2].lower()
-                        if cmd == "clear":
-                            priority = self.ev_priority["CLEAR"]
-                        if cmd == "allclear":
-                            priority = self.ev_priority["ALLCLEAR"]
-                    except:
-                        fail = True
-                        print(x[2])
-                if not fail:
-                    sql = "INSERT INTO P_QUEUE (ev_type, ev_cmd, ev_msg, ev_extra, importance) " + \
-                     f"VALUES ('{ev_type}', '{ev_cmd}', '{ev_msg}', '{ev_extra}', {priority})"
-                    db.query(sql)
+                    cmd = x[2].lower()
+                    if cmd == "clear":
+                        priority = self.ev_priority["CLEAR"]
+                    if cmd == "allclear":
+                        priority = self.ev_priority["ALLCLEAR"]
+                sql = "INSERT INTO P_QUEUE (ev_type, ev_cmd, ev_msg, ev_extra, importance) " + \
+                    f"VALUES ('{ev_type}', '{x[2]}', '{x[3]}', '{x[4]}', {priority})"
+                db.query(sql)
 
         db.execute(f"DELETE FROM EVENTS WHERE id <= {latest_entry}")
 

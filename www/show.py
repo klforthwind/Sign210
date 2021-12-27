@@ -2,6 +2,7 @@
 from show_functions import *
 from extra_funcs import *
 from command import *
+import json
 
 class Show():
 
@@ -26,8 +27,10 @@ class Show():
         
         # event = (id, ev_type, ev_extra, importance)
         ev_type = event[1]
+        ev = event
+        ev = (ev[0], ev[1], ev[2], ev[3], json.loads(ev[4]), ev[5])
         if ev_type in self.functions:
-            self.functions[ev_type](event, db, pixels)
+            self.functions[ev_type](ev, db, pixels)
 
     def run_default(self, event, db, pixels):
         curr_strip = db.get_evar(db.CURR_STRIP)
