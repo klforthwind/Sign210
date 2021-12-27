@@ -1,3 +1,4 @@
+from extra_funcs import *
 import json
 
 class TableHandler():
