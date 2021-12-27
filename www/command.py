@@ -92,16 +92,26 @@ def exec_command(event, db, pixels):
             'waluigihat': ("lr.png", "75,0,130"),
             'cheppyhat': ("c.png", "255,89,0"),
             'forthhat': ("f.png", "0,0,255"),
-            'forthwindhat': ("f.png", "0,0,255"),
             "jjhat": ("jj.png", "255,0,0"),
             "silverhat": ("silverdown.png", "60,60,60"),
             "cheesyhat": ("richandcheesy.png", "234,234,20"),
-            "danhat": ("d.png", "140,33,0")
+            "danhat": ("d.png", "140,33,0"),
+            "fflhat": ("ffl.png", "0,255,0")
         }
 
         if cmd in hats:
             db.set_evar(db.DEF_MAT, hats[cmd][0])
             db.set_evar(db.DEF_STRIP, hats[cmd][1])
+        
+        if cmd == 'hats':
+            db.set_evar(db.CURR_MAT, "")
+            db.set_evar(db.CURR_STRIP, "")
+
+            for h in hats:
+                config = hats[h]
+                strip = get_strip_from_color(config[1])
+                pixels.show(config[0], strip)
+                time.sleep(1)
 
     if valid_msg(cmd):
         res = db.query(f"SELECT * FROM COMMANDS WHERE command = '{cmd}'")

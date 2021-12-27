@@ -1,7 +1,7 @@
 import re
 
 # try to prevent sql injections
-msg_regex = "^[A-Za-z0-9.-_ ]+$"
+msg_regex = "^[A-Za-z0-9,.-_ ]+$"
 msg_pattern = re.compile(msg_regex)
 
 # validates rgb patterns - ex: "255,0,30"
@@ -14,9 +14,8 @@ def valid_msg(msg):
 def valid_rgb(msg):
     return rgb_pattern.match(msg)
 
-def get_strip(db):
+def get_strip_from_color(strip_color):
     r,g,b = 255,0,0
-    strip_color = db.get_evar(db.DEF_STRIP)
     if rgb_pattern.match(strip_color):
         r,g,b = map(int, strip_color.split(","))
     
@@ -27,6 +26,10 @@ def get_strip(db):
         else:
             strip.append((r,g,b))
     return strip
+
+def get_strip(db):
+    strip_color = db.get_evar(db.DEF_STRIP)
+    return get_strip_from_color(strip_color)
 
 def set_default(event, db, pixels):
     def_matrix = db.get_evar(db.DEF_MAT)
