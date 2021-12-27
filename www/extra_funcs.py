@@ -9,7 +9,7 @@ pixel_re = "([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])"
 rgb_pattern = re.compile(f"^{pixel_re},{pixel_re},{pixel_re}$")
 
 def valid_msg(msg):
-    return msg_pattern.match(msg)
+    return msg == "" or msg_pattern.match(msg)
 
 def valid_rgb(msg):
     return rgb_pattern.match(msg)
