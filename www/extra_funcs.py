@@ -1,7 +1,7 @@
 import re
 
 # try to prevent sql injections
-msg_regex = "^[A-Za-z0-9.-_]+$"
+msg_regex = "^[A-Za-z0-9.-_ ]+$"
 msg_pattern = re.compile(msg_regex)
 
 # validates rgb patterns - ex: "255,0,30"

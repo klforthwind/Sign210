@@ -19,7 +19,7 @@ def exec_command(event, db, pixels):
                     if len(res) == 0 and exists(f"imgs/{split_msg[1]}"):
                         sql = "INSERT INTO COMMANDS (command, pic_name) VALUES " + \
                         f"('{split_msg[0]}', '{split_msg[1]}')"
-                        db.query(sql)
+                        db.execute(sql)
         if cmd == 'dc' or cmd == 'deletecommand':
             if len(msg.split()) == 1:
                 if valid_msg(msg):
