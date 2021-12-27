@@ -5,9 +5,9 @@ import time
 import os
 
 def exec_command(event, db, pixels):
-    ev_extra = event[2]
-    cmd = ev_extra['command'].lower()
-    msg = ev_extra['message'].lower()
+    ev_extra = event[4]
+    cmd = event[2].lower()
+    msg = event[3].lower()
 
     # mod / broadcaster only commands
     if ev_extra['flags']['mod'] or ev_extra['flags']['broadcaster']:
@@ -93,7 +93,9 @@ def exec_command(event, db, pixels):
             'cheppyhat': ("c.png", "255,89,0"),
             'forthhat': ("f.png", "0,0,255"),
             'forthwindhat': ("f.png", "0,0,255"),
-            "jjhat": ("jj.png", "255,0,0")
+            "jjhat": ("jj.png", "255,0,0"),
+            "silverhat": ("silverdown.png", "60,60,60"),
+            "cheesyhat": ("richandcheesy.png", "234,234,20")
         }
 
         if cmd in hats:

@@ -12,13 +12,13 @@ class Packager():
 
         # main events / lights handler
         # self.downloader.download("table_handler.py")
-        self.downloader.download("show_functions.py")
-        self.downloader.download("extra_funcs.py")
+        # self.downloader.download("show_functions.py")
+        # self.downloader.download("extra_funcs.py")
         # self.downloader.download("command.py")
         # self.downloader.download("db_conn.py")
         # self.downloader.download("lights.py")
-        self.downloader.download("show.py")
-        self.downloader.download("main.py")
+        # self.downloader.download("show.py")
+        # self.downloader.download("main.py")
 
 
         # images - directory nonexistent
@@ -62,7 +62,9 @@ class Packager():
         # self.downloader.download_img("imgs/raid.png")
         # self.downloader.download_img("imgs/redbluedot.png")
         # self.downloader.download_img("imgs/redsus.png")
+        # self.downloader.download_img("imgs/richandcheesy.png")
         # self.downloader.download_img("imgs/rupee.png")
+        # self.downloader.download_img("imgs/silverdown.png")
         # self.downloader.download_img("imgs/star.png")
         # self.downloader.download_img("imgs/subnautica.png")
         # self.downloader.download_img("imgs/terminal.png")

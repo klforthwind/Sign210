@@ -25,8 +25,6 @@ class TableHandler():
         if len(res) == 0:
             return
         ev = res[0]
-        if ev[1] != "FOLLOW" and ev[1] != "GAMECHANGE":
-            ev = (ev[0], ev[1], json.loads(ev[2]), ev[3])
 
         if self.should_clear(ev):
             db.execute(f"DELETE FROM P_QUEUE WHERE 1=1")
@@ -37,7 +35,7 @@ class TableHandler():
         return ev
 
     def process_events(self, db):
-        # [(id, ev_type, ev_extra)]
+        # [(id, ev_type, ev_cmd, ev_msg, ev_extra)]
         res = db.query("SELECT * FROM EVENTS")
 
         latest_entry = 0
@@ -47,21 +45,28 @@ class TableHandler():
                 latest_entry = x[0]
             if ev_type in self.ev_priority:
                 priority = self.ev_priority[ev_type]
+                fail=False
                 if ev_type == "COMMAND":
-                    cmd = json.loads(x[2])['command'].lower()
-                    if cmd == "clear":
-                        priority = self.ev_priority["CLEAR"]
-                    if cmd == "allclear":
-                        priority = self.ev_priority["ALLCLEAR"]
-                sql = "INSERT INTO P_QUEUE (ev_type, ev_extra, importance) VALUES " + \
-                    f"('{ev_type}', '{x[2]}', {priority})"
-                db.query(sql)
+                    # print(x)
+                    try:
+                        cmd = x[2].lower()
+                        if cmd == "clear":
+                            priority = self.ev_priority["CLEAR"]
+                        if cmd == "allclear":
+                            priority = self.ev_priority["ALLCLEAR"]
+                    except:
+                        fail = True
+                        print(x[2])
+                if not fail:
+                    sql = "INSERT INTO P_QUEUE (ev_type, ev_cmd, ev_msg, ev_extra, importance) " + \
+                     f"VALUES ('{ev_type}', '{ev_cmd}', '{ev_msg}', '{ev_extra}', {priority})"
+                    db.query(sql)
 
         db.execute(f"DELETE FROM EVENTS WHERE id <= {latest_entry}")
 
     # event = (id, ev_type, ev_extra, importance)
     def should_clear(self, event):
         return (event[1] == "COMMAND" and 
-            (event[2]['command'].lower() == "allclear" or
-            event[2]['command'].lower() == "clear") and
-            (event[2]['flags']['mod'] or event[2]['flags']['broadcaster']))
+            (event[2].lower() == "allclear" or
+            event[2].lower() == "clear") and
+            (event[4]['flags']['mod'] or event[4]['flags']['broadcaster']))

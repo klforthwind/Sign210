@@ -58,7 +58,8 @@ class DBConn():
 
     def set_evar(self, evar, val):
         self.execute(f"DELETE FROM CONFIG WHERE evar = '{evar}'")
-        self.execute(f"INSERT INTO CONFIG (evar, val) VALUES ('{evar}', '{val}')")
+        if self.get_evar(evar) == "":
+            self.execute(f"INSERT INTO CONFIG (evar, val) VALUES ('{evar}', '{val}')")
 
     def reset_config(self):
         self.set_evar(self.CURR_MAT, "")

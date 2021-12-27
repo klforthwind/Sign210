@@ -50,7 +50,7 @@ class Show():
         animate_raid(event, db, pixels)
 
     def run_gamechange(self, event, db, pixels):
-        show_game(db, pixels, event[2], 8)
+        show_game(db, pixels, event[4], 8)
     
     def run_follow(self, event, db, pixels):
         pulse(db, pixels, "follow.png", [14,2,36], [153,51,255], 8)
@@ -74,10 +74,10 @@ class Show():
         slow_rainbow_shift(event, db, pixels)
     
     def run_command(self, event, db, pixels):
-        cmd = event[2]['command'].lower()
-        msg = event[2]['message'].upper()
+        cmd = event[2].lower()
+        msg = event[3].upper()
         
-        flags = event[2]['flags']
+        flags = event[4]['flags']
         mod_status = flags['mod'] or flags['broadcaster']
 
         if cmd == "mod" and mod_status:
