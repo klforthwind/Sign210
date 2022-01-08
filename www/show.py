@@ -68,7 +68,7 @@ class Show():
         slow_rainbow(event, db, pixels)
     
     def run_resub(self, event, db, pixels):
-        self.run_sub(event, db, pixels)
+        slow_rainbow(event, db, pixels)
     
     def run_giftsub(self, event, db, pixels):
         fast_rainbow(event, db, pixels)

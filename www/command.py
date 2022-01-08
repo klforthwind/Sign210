@@ -54,36 +54,19 @@ def exec_command(event, db, pixels):
                 if valid_rgb(msg):
                     db.set_evar(db.CURR_STRIP, "")
                     db.set_evar(db.DEF_STRIP, msg)
-        if cmd == 'ep' or cmd == 'episode':
+        if cmd == 'happybirthday':
             db.set_evar(db.CURR_MAT, "")
 
             strip = get_strip(db)
             pixels.show(db.get_evar(db.DEF_MAT), strip)
 
-            start = datetime.strptime('03/17/2020', '%m/%d/%Y')
-            today = datetime.today()
-            ep_num = (today - start).days + 1
-            for x in range(7, -46, -1):
+            happybirthday = "Happy Birthday!!"
+            for x in range(7, -150, -1):
                 pixels.matrix.fill(0x000000)
-                pixels.matrix.text(f"EP. {ep_num}", x, (x//2)%2, int('0x%02x%02x%02x' % strip[120], 16))
+                pixels.matrix.text(f"{happybirthday}", x, 1, int('0x%02x%02x%02x' % strip[120], 16))
                 pixels.matrix.display()
                 time.sleep(0.1)
             set_default(event, db, pixels)
-        if cmd == 'temps':
-            db.set_evar(db.CURR_MAT, "")
-
-            strip = get_strip(db)
-            pixels.show(db.get_evar(db.DEF_MAT), strip)
-
-            temp = os.popen("vcgencmd measure_temp").read().split("=")[1]
-            print(temp)
-            for x in range(7, -46, -1):
-                pixels.matrix.fill(0x000000)
-                pixels.matrix.text(f"{temp}", x, 1, int('0x%02x%02x%02x' % strip[120], 16))
-                pixels.matrix.display()
-                time.sleep(0.1)
-            set_default(event, db, pixels)
-
 
         hats = {
             'mariohat': ("m.png", "255,0,0"),
@@ -94,9 +77,12 @@ def exec_command(event, db, pixels):
             'forthhat': ("f.png", "0,0,255"),
             "jjhat": ("jj.png", "255,0,0"),
             "silverhat": ("silverdown.png", "60,60,60"),
+            "weaselhat": ("coffee.png", "200,200,200"),
             "cheesyhat": ("richandcheesy.png", "234,234,20"),
             "danhat": ("d.png", "140,33,0"),
-            "fflhat": ("ffl.png", "0,255,0")
+            "fflhat": ("ffl.png", "0,255,0"),
+            "dizhat": ("dizhat.png", "255,182,193"),
+            "mokihat": ("jj_nft.png", "75,0,0")
         }
 
         if cmd in hats:
@@ -112,6 +98,48 @@ def exec_command(event, db, pixels):
                 strip = get_strip_from_color(config[1])
                 pixels.show(config[0], strip)
                 time.sleep(1)
+    if cmd == 'ep' or cmd == 'episode':
+        db.set_evar(db.CURR_MAT, "")
+
+        strip = get_strip(db)
+        pixels.show(db.get_evar(db.DEF_MAT), strip)
+
+        start = datetime.strptime('03/17/2020', '%m/%d/%Y')
+        today = datetime.today()
+        ep_num = (today - start).days + 1
+        for x in range(7, -46, -1):
+            pixels.matrix.fill(0x000000)
+            pixels.matrix.text(f"EP. {ep_num}", x, (x//2)%2, int('0x%02x%02x%02x' % strip[120], 16))
+            pixels.matrix.display()
+            time.sleep(0.1)
+        set_default(event, db, pixels)
+    if cmd == 'temps':
+        db.set_evar(db.CURR_MAT, "")
+
+        strip = get_strip(db)
+        pixels.show(db.get_evar(db.DEF_MAT), strip)
+
+        temp = os.popen("vcgencmd measure_temp").read().split("=")[1]
+        for x in range(7, -46, -1):
+            pixels.matrix.fill(0x000000)
+            pixels.matrix.text(f"{temp}", x, 1, int('0x%02x%02x%02x' % strip[120], 16))
+            pixels.matrix.display()
+            time.sleep(0.1)
+        set_default(event, db, pixels)
+    if cmd == 'lurk':
+        db.set_evar(db.CURR_MAT, "")
+        strip = get_strip(db)
+
+        for x in range(9):
+            pixels.show(f"lurk/{x}.png", strip)
+            time.sleep(0.3)
+        
+        time.sleep(4)
+
+        for x in range(8, -1, -1):
+            pixels.show(f"lurk/{x}.png", strip)
+            time.sleep(0.3)
+
 
     if valid_msg(cmd):
         res = db.query(f"SELECT * FROM COMMANDS WHERE command = '{cmd}'")

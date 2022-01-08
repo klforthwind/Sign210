@@ -112,10 +112,9 @@ def loading_raid(event, db, pixels):
 #
 #
 def animate_raid(event, db, pixels):
+    loading_raid(event, db, pixels)
     if event[4]['flags']['vip'] or event[4]['flags']['broadcaster']:
         rick(event, db, pixels)
-    else:
-        loading_raid(event, db, pixels)
 
     set_default(event, db, pixels)
 
@@ -196,7 +195,10 @@ def show_game(db, pixels, game_title, wait_time):
         "Gartic Phone": "gartic.png",
         "Valheim": "valheim.png",
         "Golf": "golfball210.png",
-        "Subnautica": "subnautica.png"
+        "Subnautica": "subnautica.png",
+        "Satisfactory": "satisfactory.png",
+        "Fall Guys": "fallguy.png",
+        "Pokemon": "pokeball.png"
     }
 
     for game in games:
