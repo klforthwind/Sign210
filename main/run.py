@@ -1,10 +1,12 @@
-from downloader import *
+# pip3 install gitpython
 from db_conn import *
+import git
 import os
 
 LATEST_PY = "packager.py"
 
 downloader = Downloader()
+repo = git.Repo('https://github.com/klforthwind/Sign210')
 
 try:
     db = DBConn()
@@ -18,7 +20,7 @@ except:
 
 while True:
     try:
-        downloader.download(LATEST_PY)
+        repo.remotes.origin.pull()
 
         # run python files using sudo - neopixel lights require sudo
         os.system(f"sudo python3 {LATEST_PY}")

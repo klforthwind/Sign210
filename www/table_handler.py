@@ -29,7 +29,11 @@ class TableHandler():
         
         ev = list(res[0])
         if ev[1] != "GAMECHANGE" and ev[1] != "FOLLOW":
-            ev[4] = json.loads(ev[4])
+            try:
+                ev[4] = json.loads(ev[4])
+            except:
+                pass
+                #moki
 
         if self.should_clear(ev):
             db.execute(f"DELETE FROM P_QUEUE WHERE 1=1")
