@@ -20,7 +20,7 @@ while True:
         repo.remotes.origin.pull()
 
         # run python files using sudo - neopixel lights require sudo
-        os.system(f"sudo python3 main.py")
+        os.system("sudo python3 main.py")
     except:
         # expecting errors on new updates - don't want program to crash
         pass

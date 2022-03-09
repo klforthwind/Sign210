@@ -1,6 +1,8 @@
 # sudo pip3 install rpi_ws281x adafruit-circuitpython-neopixel
 # sudo pip3 install adafruit-circuitpython-pixel-framebuf
 # sudo apt-get install libopenjp2-7
+# sudo apt-get install libjpeg-dev zlib1g-dev
+# sudo pip3 install pillow
 
 from adafruit_pixel_framebuf import PixelFramebuffer
 from PIL import Image
