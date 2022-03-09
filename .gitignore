@@ -105,6 +105,3 @@ dist
 
 # Python Cache
 __pycache__
-
-# Any downloaded images
-main/images/*.png
