@@ -1,12 +1,9 @@
 # pip3 install gitpython
-from db_conn import *
 import git
 import os
 
-LATEST_PY = "packager.py"
-
-downloader = Downloader()
-repo = git.Repo('https://github.com/klforthwind/Sign210')
+repo = git.Repo('../')
+repo.remotes.origin.pull()
 
 try:
     db = DBConn()
@@ -23,7 +20,7 @@ while True:
         repo.remotes.origin.pull()
 
         # run python files using sudo - neopixel lights require sudo
-        os.system(f"sudo python3 {LATEST_PY}")
+        os.system(f"sudo python3 main.py")
     except:
         # expecting errors on new updates - don't want program to crash
         pass
