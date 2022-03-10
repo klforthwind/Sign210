@@ -31,7 +31,7 @@ def get_strip(db):
     strip_color = db.get_evar(db.DEF_STRIP)
     return get_strip_from_color(strip_color)
 
-def set_default(event, db, pixels):
+def set_default(db, pixels):
     def_matrix = db.get_evar(db.DEF_MAT)
     strip = get_strip(db)
 

@@ -1,4 +1,5 @@
 # sudo apt install numpy-python
+# sudo pip3 install numpy
 from random import randint
 from extra_funcs import *
 import numpy as np
@@ -116,7 +117,7 @@ def animate_raid(event, db, pixels):
     if event[4]['flags']['vip'] or event[4]['flags']['broadcaster']:
         rick(event, db, pixels)
 
-    set_default(event, db, pixels)
+    set_default(db, pixels)
 
 #
 #
@@ -142,7 +143,7 @@ def slow_rainbow(event, db, pixels):
         time.sleep(0.0125)
         j+=2
 
-    set_default(event, db, pixels)
+    set_default(db, pixels)
 
 #
 #
@@ -161,7 +162,7 @@ def fast_rainbow(event, db, pixels):
         time.sleep(0.025)
         j+=1
 
-    set_default(event, db, pixels)
+    set_default(db, pixels)
 
 #
 #
@@ -180,7 +181,7 @@ def slow_rainbow_shift(event, db, pixels):
         time.sleep(0.025)
         j+=1
 
-    set_default(event, db, pixels)
+    set_default(db, pixels)
 
 #
 #
@@ -207,7 +208,7 @@ def show_game(db, pixels, game_title, wait_time):
             time.sleep(wait_time)
             break
     
-    set_default(event, db, pixels)
+    set_default(db, pixels)
 
 def cheer(event, db, pixels):
     colors = [(153,51,255),(0,0,255),(0,255,0)]
@@ -226,7 +227,7 @@ def cheer(event, db, pixels):
 
         time.sleep(0.1)
     
-    set_default(event, db, pixels)
+    set_default(db, pixels)
 
 
 
