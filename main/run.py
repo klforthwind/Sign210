@@ -1,9 +1,4 @@
-# pip3 install gitpython
-import git
 import os
-
-repo = git.Repo('../')
-repo.remotes.origin.pull()
 
 try:
     db = DBConn()
@@ -17,7 +12,7 @@ except:
 
 while True:
     try:
-        repo.remotes.origin.pull()
+        os.system("git pull")
 
         # run python files using sudo - neopixel lights require sudo
         os.system("sudo python3 main.py")
