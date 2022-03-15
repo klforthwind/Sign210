@@ -18,13 +18,13 @@ while time.time() < t_end:
 
     db.connect()
 
-    # process EVENTS table
+    # Process EVENTS table
     table.process_events(db)
 
-    # get event from P_QUEUE table
+    # Get event from P_QUEUE table
     ev = table.get_event(db)
 
-    # run event
+    # Run event
     show.run(ev, db, pixels)
 
     db.disconnect()

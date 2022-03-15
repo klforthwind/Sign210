@@ -33,7 +33,6 @@ class TableHandler():
                 ev[4] = json.loads(ev[4])
             except:
                 pass
-                #moki
 
         if self.should_clear(ev):
             db.execute(f"DELETE FROM P_QUEUE WHERE 1=1")

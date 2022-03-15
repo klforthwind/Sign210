@@ -1,3 +1,4 @@
+import git
 import os
 
 try:
@@ -12,7 +13,8 @@ except:
 
 while True:
     try:
-        os.system("git pull")
+        g = git.Git('.')
+        g.pull('origin','main')
 
         # run python files using sudo - neopixel lights require sudo
         os.system("sudo python3 main.py")
