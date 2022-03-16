@@ -67,7 +67,7 @@ class TableHandler():
                         priority = self.ev_priority[cmd]
                 sql = "INSERT INTO P_QUEUE (ev_type, ev_cmd, ev_msg, ev_extra, importance) " + \
                     f"VALUES ('{ev_type}', '{x[2]}', '{x[3]}', '{x[4]}', {priority})"
-                db.query(sql)
+                db.execute(sql)
 
         db.execute(f"DELETE FROM EVENTS WHERE id <= {latest_id}")
 
