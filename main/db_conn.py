@@ -24,6 +24,7 @@ class DBConn():
         load_dotenv()
 
     def connect(self):
+        """Connects to MySQL DB."""
         self.mydb = mysql.connector.connect(
             host="127.0.0.1",
             user=os.getenv('MYSQL_USER'),
@@ -34,33 +35,33 @@ class DBConn():
             self.cursor = self.mydb.cursor()
 
     def disconnect(self):
+        """Disconnects from MySQL DB."""
         if self.mydb.is_connected():
             self.cursor.close()
             self.mydb.close()
     
     def query(self, query):
-        if not self.mydb.is_connected():
-            return ""
+        """Query data from MySQL DB."""
         self.cursor.execute(query)
         return self.cursor.fetchall()
 
     def execute(self, query):
-        if not self.mydb.is_connected():
-            return ""
+        """Execute SQL that affects MySQL DB (Insert / Delete / Update)."""
         self.cursor.execute(query)
         self.mydb.commit()
 
     def get_evar(self, evar):
-        # [(EVAR, VAL)]
+        """Get config variable."""
         res = self.query(f"SELECT * FROM CONFIG WHERE evar = '{evar}'")
         return res[0][1] if len(res) else ""
 
     def set_evar(self, evar, val):
+        """Set config variable."""
         self.execute(f"DELETE FROM CONFIG WHERE evar = '{evar}'")
-        if self.get_evar(evar) == "":
-            self.execute(f"INSERT INTO CONFIG (evar, val) VALUES ('{evar}', '{val}')")
+        self.execute(f"INSERT INTO CONFIG (evar, val) VALUES ('{evar}', '{val}')")
 
     def reset_config(self):
+        """Reset config to default values."""
         self.set_evar(self.CURR_MAT, "")
         self.set_evar(self.CURR_STRIP, "")
         self.set_evar(self.DEF_MAT, "jj.png")
