@@ -7,11 +7,11 @@ from os.path import exists
 import os
 
 class DBConn():
-    # config variables
+    # Config variables
     ACCESS_TOKEN = "ACCESS_TOKEN"
     CURR_GAME = "CURR_GAME"
 
-    # light config variables
+    # Light config variables
     CURR_MAT = "CURR_MATRIX"
     CURR_STRIP = "CURR_STRIP"
     DEF_MAT = "DEFAULT_MATRIX"

@@ -66,7 +66,7 @@ def exec_command(event, db, pixels):
                 pixels.matrix.text(f"{happybirthday}", x, 1, int('0x%02x%02x%02x' % strip[120], 16))
                 pixels.matrix.display()
                 time.sleep(0.1)
-            set_default(event, db, pixels)
+            set_default(db, pixels)
 
         hats = {
             'mariohat': ("m.png", "255,0,0"),
@@ -117,7 +117,7 @@ def exec_command(event, db, pixels):
             pixels.matrix.text(f"EP. {ep_num}", x, (x//2)%2, int('0x%02x%02x%02x' % strip[120], 16))
             pixels.matrix.display()
             time.sleep(0.1)
-        set_default(event, db, pixels)
+        set_default(db, pixels)
     if cmd == 'temps':
         db.set_evar(db.CURR_MAT, "")
 
@@ -130,7 +130,7 @@ def exec_command(event, db, pixels):
             pixels.matrix.text(f"{temp}", x, 1, int('0x%02x%02x%02x' % strip[120], 16))
             pixels.matrix.display()
             time.sleep(0.1)
-        set_default(event, db, pixels)
+        set_default(db, pixels)
     if cmd == 'lurk':
         db.set_evar(db.CURR_MAT, "")
         strip = get_strip(db)

@@ -17,8 +17,8 @@ while True:
         g = git.Git('.')
         g.pull('origin','main')
 
-        # run python files using sudo - neopixel lights require sudo
+        # Run python files using sudo - neopixel lights require sudo
         os.system("sudo python3 main.py")
     except:
-        # expecting errors on new updates - don't want program to crash
+        # Expecting errors on new updates - don't want program to crash
         pass
