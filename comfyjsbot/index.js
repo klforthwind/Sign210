@@ -17,7 +17,7 @@ var logEvent = ( ev_type, ev_cmd, ev_msg, ev_extra ) => {
     if (ev_extra.length > 2046) return;
 
     let sql = "INSERT INTO EVENTS (ev_type, ev_cmd, ev_msg, ev_extra) VALUES ('" + 
-        ev_type + "', '" + connection.escape(ev_cmd) + "', '" + connection.escape(ev_msg) + "', '" + ev_extra + "')"
+        ev_type + "', '" + ev_cmd + "', '" + ev_msg + "', '" + ev_extra + "')"
     
 
     pool.getConnection( (err, connection) => {
