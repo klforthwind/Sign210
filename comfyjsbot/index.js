@@ -16,12 +16,11 @@ var logEvent = ( ev_type, ev_cmd, ev_msg, ev_extra ) => {
     if (ev_msg.length > 254) return;
     if (ev_extra.length > 2046) return;
 
-    let sql = "INSERT INTO EVENTS (ev_type, ev_cmd, ev_msg, ev_extra) VALUES ('" + 
-        ev_type + "', '" + ev_cmd + "', '" + ev_msg + "', '" + ev_extra + "')"
-    
-
     pool.getConnection( (err, connection) => {
         connection.query( 'START TRANSACTION', (err, rows) => {
+            let sql = `INSERT INTO EVENTS (ev_type, ev_cmd, ev_msg, ev_extra) VALUES 
+            (${connection.escape(ev_type)}, ${connection.escape(ev_cmd)}, 
+            ${connection.escape(ev_msg)}, ${connection.escape(ev_extra)})`
             connection.query( sql, (err, rows) => {
                 connection.query( 'COMMIT', (err, rows) => {
                     connection.release()
