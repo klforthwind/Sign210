@@ -54,7 +54,7 @@ class TableHandler():
 
             if ev_type == "COMMAND":
                 cmd = row[2].upper()
-                if cmd == "CLEAR" or cm == "ALLCLEAR":
+                if cmd == "CLEAR" or cmd == "ALLCLEAR":
                     priority = self.ev_priority[cmd]
             sql = "INSERT INTO P_QUEUE (ev_type, ev_cmd, ev_msg, ev_extra, importance) " + \
                 f"VALUES ('{ev_type}', '{row[2]}', '{row[3]}', '{row[4]}', {priority})"
