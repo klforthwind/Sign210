@@ -78,8 +78,8 @@ if __name__ == "__main__":
 
         if new_game != curr_game:
             db.set_evar(db.CURR_GAME, new_game)
-            sql = "INSERT INTO EVENTS (ev_type, ev_extra) VALUES \
-                ('GAMECHANGE', \'{\'game\':\'" + new_game + "\'}\')"
+            sql = f"INSERT INTO EVENTS (ev_type, ev_msg, ev_extra) VALUES \
+                ('GAMECHANGE', '{new_game}', '" + "{}')"
             db.execute(sql)
 
         followers = data["followers"]
@@ -87,8 +87,8 @@ if __name__ == "__main__":
         for f in followers:
             sql = f"SELECT * FROM FOLLOWERS WHERE user_login='{f}'"
             if len(db.query(sql)) == 0:
-                sql = "INSERT INTO EVENTS (ev_type, ev_extra) VALUES \
-                    ('FOLLOW', \'{\'game\':\'" + f + "\'}\')"
+                sql = f"INSERT INTO EVENTS (ev_type, ev_msg, ev_extra) VALUES \
+                    ('FOLLOW', '{f}', '" + "{}')"
                 db.execute(sql)
                 sql = f"INSERT INTO FOLLOWERS (user_login) VALUES ('{f}')"
                 db.execute(sql)
