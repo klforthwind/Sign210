@@ -5,13 +5,17 @@ import time
 import os
 
 def exec_command(event, db, pixels):
+    """Executes command sent by Twitch User."""
+
     ev_extra = event[4]
     cmd = event[2].lower()
     msg = event[3].lower()
 
-    # mod / broadcaster only commands
-    if ev_extra['flags']['mod'] or ev_extra['flags']['broadcaster']:
-        if cmd == 'ac' or cmd == 'addcommand':
+    flags = event[4]['flags']
+
+    # Mod / broadcaster commands
+    if flags['mod'] or flags['broadcaster']:
+        if cmd in ['ac','addcommand']:
             split_msg = msg.split()
             if len(split_msg) == 2:
                 if valid_msg(split_msg[0]) and valid_msg(split_msg[1]):
@@ -20,17 +24,16 @@ def exec_command(event, db, pixels):
                         sql = "INSERT INTO COMMANDS (command, pic_name) VALUES " + \
                         f"('{split_msg[0]}', '{split_msg[1]}')"
                         db.execute(sql)
-        if cmd == 'dc' or cmd == 'deletecommand':
-            if len(msg.split()) == 1:
-                if valid_msg(msg):
-                    db.execute(f"DELETE FROM COMMANDS WHERE command = '{msg}'")
-        if cmd == 'reboot':
+        elif cmd in ['dc','deletecommand']:
+            if len(msg.split()) == 1 and valid_msg(msg):
+                db.execute(f"DELETE FROM COMMANDS WHERE command = '{msg}'")
+        elif cmd in ['reboot','restart']:
             db.reset_config()
             os.system("sudo shutdown -r now")
-        if cmd == 'shutdown':
+        elif cmd == 'shutdown':
             db.reset_config()
             os.system("sudo shutdown -h now")
-        if cmd == 'showall':
+        elif cmd == 'showall':
             db.set_evar(db.CURR_MAT, "")
             res = db.query(f"SELECT * FROM COMMANDS ORDER BY command")
             if len(res) > 0:
@@ -39,22 +42,20 @@ def exec_command(event, db, pixels):
                 for x in res:
                     pixels.show(x[1], strip)
                     time.sleep(0.5)
-        if cmd == 'setdefmatrix':
-            if len(msg.split()) == 1:
-                if valid_msg(msg):
-                    res = db.query(f"SELECT * FROM COMMANDS WHERE command = '{msg}'")
-                    if len(res) > 0:
-                        img = res[0][1]
-                        db.set_evar(db.CURR_MAT, img)
-                        db.set_evar(db.DEF_MAT, img)
-                        strip = get_strip(db)
-                        pixels.show(img,strip)
-        if cmd == 'setdefstrip':
-            if len(msg.split()) == 1:
-                if valid_rgb(msg):
-                    db.set_evar(db.CURR_STRIP, "")
-                    db.set_evar(db.DEF_STRIP, msg)
-        if cmd == 'happybirthday':
+        elif cmd in ['setdefmatrix', 'sdm']:
+            if len(msg.split()) == 1 and valid_msg(msg):
+                res = db.query(f"SELECT * FROM COMMANDS WHERE command = '{msg}'")
+                if len(res) > 0:
+                    img = res[0][1]
+                    db.set_evar(db.CURR_MAT, img)
+                    db.set_evar(db.DEF_MAT, img)
+                    strip = get_strip(db)
+                    pixels.show(img,strip)
+        elif cmd in ['setdefstrip', 'sds']:
+            if len(msg.split()) == 1 and valid_rgb(msg):
+                db.set_evar(db.CURR_STRIP, "")
+                db.set_evar(db.DEF_STRIP, msg)
+        elif cmd == 'happybirthday':
             db.set_evar(db.CURR_MAT, "")
 
             strip = get_strip(db)
@@ -103,7 +104,7 @@ def exec_command(event, db, pixels):
                 strip = get_strip_from_color(config[1])
                 pixels.show(config[0], strip)
                 time.sleep(1)
-    if cmd == 'ep' or cmd == 'episode':
+    if cmd in ['ep', 'episode']:
         db.set_evar(db.CURR_MAT, "")
 
         strip = get_strip(db)
@@ -118,7 +119,7 @@ def exec_command(event, db, pixels):
             pixels.matrix.display()
             time.sleep(0.1)
         set_default(db, pixels)
-    if cmd == 'temps':
+    if cmd in ['temps','tmp']:
         db.set_evar(db.CURR_MAT, "")
 
         strip = get_strip(db)
@@ -139,7 +140,7 @@ def exec_command(event, db, pixels):
             pixels.show(f"lurk/{x}.png", strip)
             time.sleep(0.3)
         
-        time.sleep(4)
+        time.sleep(3)
 
         for x in range(8, -1, -1):
             pixels.show(f"lurk/{x}.png", strip)
@@ -147,13 +148,11 @@ def exec_command(event, db, pixels):
 
 
     if valid_msg(cmd):
-        res = db.query(f"SELECT * FROM COMMANDS WHERE command = '{cmd}'")
+        res = db.query(f"SELECT command, pic_name FROM COMMANDS WHERE command = '{cmd}'")
         if len(res) > 0:
-
             strip = get_strip(db)
 
             pixels.show(res[0][1], strip)
-
             db.set_evar(db.CURR_MAT, res[0][1])
 
             time.sleep(4)
