@@ -30,16 +30,10 @@ class TableHandler():
             return
         
         event = list(res[0])
-        try:
-            event[4] = json.loads(event[4])
+        event[4] = json.loads(event[4])
 
-            if self.should_clear(event):
-                db.execute(f"DELETE FROM P_QUEUE WHERE 1=1")
-                return
-        except:
-            pass
-
-        db.execute(f"DELETE FROM P_QUEUE WHERE id={event[0]}")
+        clear_cond = "1=1" if self.should_clear(event) else f"id={event[0]}"
+        db.execute(f"DELETE FROM P_QUEUE WHERE {clear_cond}")
         return event
 
     def process_events(self, db):
@@ -53,12 +47,12 @@ class TableHandler():
 
         for row in res:
             ev_type = row[1]
-            priority = self.ev_priority[ev_type]
+            cmd = row[2].upper()
+            is_clear = ev_type == "COMMAND" and cmd in ["ALLCLEAR", "CLEAR"]
 
-            if ev_type == "COMMAND":
-                cmd = row[2].upper()
-                if cmd == "CLEAR" or cmd == "ALLCLEAR":
-                    priority = self.ev_priority[cmd]
+            priority_key = cmd if is_clear else ev_type
+            priority = self.ev_priority[priority_key]
+
             sql = "INSERT INTO P_QUEUE (ev_type, ev_cmd, ev_msg, ev_extra, importance) " + \
                 f"VALUES ('{ev_type}', '{row[2]}', '{row[3]}', '{row[4]}', {priority})"
             db.execute(sql)
@@ -68,6 +62,6 @@ class TableHandler():
     # event = (id, ev_type, ev_extra, importance)
     def should_clear(self, event):
         """Returns whether the P_QUEUE table should be cleared based on current event."""
-        return (event[1] == "COMMAND" and
-            event[2].upper() in ["ALLCLEAR","CLEAR"] and 
+        return (event[1] == "COMMAND" and 'flags' in event[4] and
+            event[2].upper() in ["ALLCLEAR", "CLEAR"] and 
             (event[4]['flags']['mod'] or event[4]['flags']['broadcaster']))
