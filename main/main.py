@@ -22,9 +22,7 @@ while time.time() < t_end:
     table.process_events(db)
 
     # Get event from P_QUEUE table
-    ev = table.get_event(db)
-
-    # Run event
-    show.run(ev, db, pixels)
+    event = table.get_event(db)
+    show.run(event, db, pixels)
 
     db.disconnect()
