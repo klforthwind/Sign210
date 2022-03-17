@@ -4,7 +4,7 @@ import json
 
 class TableHandler():
     ev_priority = defaultdict(
-        lambda:0, {
+        lambda: 0, {
         "ALLCLEAR": 13,
         "RAID": 12,
         "CHEER": 10,
@@ -30,11 +30,14 @@ class TableHandler():
             return
         
         event = list(res[0])
-        event[4] = json.loads(event[4])
+        try:
+            event[4] = json.loads(event[4])
 
-        if self.should_clear(event):
-            db.execute(f"DELETE FROM P_QUEUE WHERE 1=1")
-            return
+            if self.should_clear(event):
+                db.execute(f"DELETE FROM P_QUEUE WHERE 1=1")
+                return
+        except:
+            pass
 
         db.execute(f"DELETE FROM P_QUEUE WHERE id={event[0]}")
         return event
