@@ -19,38 +19,25 @@ class TwitchAPI():
         self.TWITCH_USER_ID = os.getenv('TWITCH_USER_ID')
 
     def get_twitch_data(self, db):
+        """Gets follower and game data."""
         if not self.is_valid(db):
             self.refresh_token(db)
-        
-        data = dict()
-
         token = db.get_evar(db.ACCESS_TOKEN)
 
-        stream_curl_req = f"curl -X GET \
-            'https://api.twitch.tv/helix/channels?broadcaster_id={self.TWITCH_USER_ID}' \
-            -H 'Authorization: Bearer {token}' \
-            -H 'Client-Id: {self.CLIENT_ID}'"
-        
-        result = json.loads(os.popen(stream_curl_req).read())
-        data["game_name"] = result["data"][0]["game_name"]
-        data["title"] = result["data"][0]["title"]
+        data = dict()
 
-        follows_curl_req = f"curl -X GET \
-            'https://api.twitch.tv/helix/users/follows?to_id={self.TWITCH_USER_ID}' \
-            -H 'Authorization: Bearer {token}' \
-            -H 'Client-Id: {self.CLIENT_ID}'"
-        
-        result = json.loads(os.popen(follows_curl_req).read())
-        follow_data = result['data']
-        follows = []
-        for user in follow_data:
-            follows.append(user['from_login'])
+        game_data = self.get_data("channels?broadcaster_id=", token)
+        data["game_name"] = game_data[0]["game_name"]
+        data["title"] = game_data[0]["title"]
 
+        follow_data = self.get_data("users/follows?to_id=", token)
+        follows = [user['from_login'] for user in follow_data]
         data["followers"] = follows
 
         return data
 
     def is_valid(self, db):
+        """Determines validity of current Access Token."""
         token = db.get_evar(db.ACCESS_TOKEN)
         curl_req = f"curl -X GET 'https://id.twitch.tv/oauth2/validate' \
             -H 'Authorization: Bearer {token}'"
@@ -58,12 +45,25 @@ class TwitchAPI():
         return "status" not in result
     
     def refresh_token(self, db):
+        """Refreshes Access Token."""
         curl_req = "curl -X POST 'https://id.twitch.tv/oauth2/token" + \
             f"?client_id={self.CLIENT_ID}" + \
             f"&client_secret={self.CLIENT_SECRET}" + \
             "&grant_type=client_credentials'"
         result = json.loads(os.popen(curl_req).read())
         db.set_evar(db.ACCESS_TOKEN, result["access_token"])
+
+    def get_data(self, request, token):
+        """Returns api data given request and token."""
+        req = self.get_request(request, token)
+
+        return json.loads(os.popen(req).read())['data']
+    
+    def get_request(self, request, token):
+        """Returns URL request to open given request and token."""
+        return f"curl -X GET \
+            'https://api.twitch.tv/helix/{request}{self.TWITCH_USER_ID}' \
+            -H 'Authorization: Bearer {token}' -H 'Client-Id: {self.CLIENT_ID}'"
 
 if __name__ == "__main__":
     twitch_api = TwitchAPI()
@@ -72,27 +72,24 @@ if __name__ == "__main__":
     while True:
         try:
             db.connect()
-
             data = twitch_api.get_twitch_data(db)
 
             curr_game = db.get_evar(db.CURR_GAME)
-
             new_game = data["game_name"]
 
             if new_game != curr_game:
                 db.set_evar(db.CURR_GAME, new_game)
-                sql = "INSERT INTO EVENTS (ev_type, ev_extra) VALUES " + \
-                    f"('GAMECHANGE', '{new_game}')"
+                sql = "INSERT INTO EVENTS (ev_type, ev_extra) VALUES \
+                    ('GAMECHANGE', \'{\'game\':\'" + new_game + "\'}\')"
                 db.execute(sql)
 
             followers = data["followers"]
 
             for f in followers:
                 sql = f"SELECT * FROM FOLLOWERS WHERE user_login='{f}'"
-                res = db.query(sql)
-                if len(res) == 0:
-                    sql = "INSERT INTO EVENTS (ev_type, ev_extra) VALUES " + \
-                        f"('FOLLOW', '{f}')"
+                if len(db.query(sql)) == 0:
+                    sql = "INSERT INTO EVENTS (ev_type, ev_extra) VALUES \
+                        ('FOLLOW', \'{\'game\':\'" + f + "\'}\')"
                     db.execute(sql)
                     sql = f"INSERT INTO FOLLOWERS (user_login) VALUES ('{f}')"
                     db.execute(sql)
