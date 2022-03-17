@@ -1,5 +1,4 @@
 # sudo apt install numpy-python
-from collections import defaultdict
 from show_functions import *
 from extra_funcs import *
 from command import *
@@ -8,8 +7,7 @@ import json
 class Show():
 
     def __init__(self):
-        self.functions = defaultdict(
-            lambda: (lambda x,y,z: 0), {
+        self.functions = {
             "SUB": self.run_sub,
             "RESUB": self.run_resub,
             "GIFTSUB": self.run_giftsub,
@@ -20,7 +18,7 @@ class Show():
             "FOLLOW": self.run_follow,
             "CHEER": self.run_cheer,
             "RAID": self.run_raid
-        })
+        }
 
     def run(self, event, db, pixels):
         """Run function depending on event."""
@@ -28,7 +26,10 @@ class Show():
             self.run_default(event, db, pixels)
             return
         
-        self.functions[ev_type](list(event), db, pixels)
+        ev_type = event[1]
+        if ev_type in self.functions:
+            self.functions[ev_type](list(event), db, pixels)
+            set_default(db, pixels)
 
     def run_default(self, event, db, pixels):
         """Sets hat lights back to default, setting current variables to default variables."""
@@ -49,7 +50,7 @@ class Show():
         animate_raid(event, db, pixels)
 
     def run_gamechange(self, event, db, pixels):
-        show_game(db, pixels, event[4], 8)
+        show_game(db, pixels, event[3], 8)
     
     def run_follow(self, event, db, pixels):
         pulse(db, pixels, "follow.png", [14,2,36], [153,51,255], 8)
