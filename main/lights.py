@@ -3,7 +3,6 @@
 # sudo apt-get install libopenjp2-7
 # sudo apt-get install libjpeg-dev zlib1g-dev
 # sudo pip3 install pillow
-
 from adafruit_pixel_framebuf import PixelFramebuffer
 from PIL import Image
 import neopixel
@@ -29,6 +28,7 @@ class Lights():
         )
     
     def __set_matrix(self, pic_name):
+        """Sets matrix to picture pic_name."""
         # Make a black background in RGBA Mode
         image = Image.new("RGBA", (self.PIXEL_WIDTH, self.PIXEL_HEIGHT))
 
@@ -41,22 +41,27 @@ class Lights():
         self.matrix.image(image.convert("RGB"))
 
     def __show_image(self, pic_name):
+        """Displays image pic_name in pixel matrix."""
         self.__set_matrix(pic_name)
         self.matrix.display()
 
     def __set_strip(self, arr):
+        """Set strip to array of RGB values [...,(255,255,255),...]."""
         for i in range(self.STRIP_LEN):
             self.pixels[self.MATRIX_OFFSET + i] = arr[i]
     
     def show(self, pic_name, strip_arr):
+        """Sets and shows pixel matrix to picture pic_name and pixel strip to strip_arr."""
         self.__set_strip(strip_arr)
         self.__show_image(pic_name)
     
     def color_strip(self, arr):
+        """Sets and shows pixel strip to arr."""
         self.__set_strip(arr)
         self.pixels.show()
     
     def color_all(self, arr):
+        """Colors and shows all pixels (matrix included) to arr."""
         for i in range(self.NUM_PIXELS):
             self.pixels[i] = arr[i]
         self.pixels.show()
