@@ -1,4 +1,5 @@
 # sudo apt install numpy-python
+from collections import defaultdict
 from show_functions import *
 from extra_funcs import *
 from command import *
@@ -7,7 +8,8 @@ import json
 class Show():
 
     def __init__(self):
-        self.functions = {
+        self.functions = defaultdict(
+            lambda: (lambda x,y,z: 0), {
             "SUB": self.run_sub,
             "RESUB": self.run_resub,
             "GIFTSUB": self.run_giftsub,
@@ -18,29 +20,23 @@ class Show():
             "FOLLOW": self.run_follow,
             "CHEER": self.run_cheer,
             "RAID": self.run_raid
-        }
+        })
 
     def run(self, event, db, pixels):
+        """Run function depending on event."""
         if not event:
             self.run_default(event, db, pixels)
             return
         
-        # event = (id, ev_type, ev_extra, importance)
-        ev_type = event[1]
-        ev = list(event)
-
-        if ev_type in self.functions:
-            self.functions[ev_type](ev, db, pixels)
+        self.functions[ev_type](list(event), db, pixels)
 
     def run_default(self, event, db, pixels):
-        curr_strip = db.get_evar(db.CURR_STRIP)
+        """Sets hat lights back to default, setting current variables to default variables."""
         default_strip = db.get_evar(db.DEF_STRIP)
-
-        curr_matrix = db.get_evar(db.CURR_MAT)
         default_matrix = db.get_evar(db.DEF_MAT)
 
-        changed_matrix = curr_matrix != default_matrix
-        changed_strip = curr_strip != default_strip
+        changed_matrix = db.get_evar(db.CURR_MAT) != default_matrix
+        changed_strip = db.get_evar(db.CURR_STRIP) != default_strip
 
         if changed_matrix or changed_strip:
             db.set_evar(db.CURR_MAT, default_matrix)
@@ -77,6 +73,7 @@ class Show():
         slow_rainbow_shift(event, db, pixels)
     
     def run_command(self, event, db, pixels):
+        """Runs mod-triggered events (bits, subs, etc.) and then calls exec_command for other commands."""
         cmd = event[2].lower()
         msg = event[3].upper()
         
