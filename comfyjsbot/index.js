@@ -14,15 +14,16 @@ var pool = mysql.createPool({
 var logEvent = ( ev_type, ev_cmd, ev_msg, ev_extra ) => {
     if (ev_cmd.length > 254) return;
     if (ev_msg.length > 254) return;
-    if (ev_msg.includes("'")) return;
-    if (ev_msg.includes('"')) return;
+    new_msg = ev_msg.replace(/'/g, "");
+    new_msg = new_msg.replace(/"/g, "");
     if (ev_extra.length > 2046) return;
 
     pool.getConnection( (err, connection) => {
         connection.query( 'START TRANSACTION', (err, rows) => {
             let sql = `INSERT INTO EVENTS (ev_type, ev_cmd, ev_msg, ev_extra) VALUES 
             (${connection.escape(ev_type)}, ${connection.escape(ev_cmd)}, 
-            ${connection.escape(ev_msg)}, ${connection.escape(ev_extra)})`
+            ${connection.escape(new_msg)}, ${connection.escape(ev_extra)})`
+            console.log(sql)
             connection.query( sql, (err, rows) => {
                 connection.query( 'COMMIT', (err, rows) => {
                     connection.release()
