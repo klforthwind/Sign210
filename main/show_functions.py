@@ -1,4 +1,4 @@
-# sudo apt install numpy-python
+# sudo apt install numpy-python OR
 # sudo pip3 install numpy
 from random import randint
 from extra_funcs import *

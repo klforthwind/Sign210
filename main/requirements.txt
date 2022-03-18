@@ -1,0 +1,8 @@
+rpi_ws281x
+adafruit-circuitpython-neopixel
+adafruit-circuitpython-pixel-framebuf
+mysql-connector-python
+python-dotenv
+gitpython
+pillow
+numpy
