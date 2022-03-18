@@ -1,7 +1,7 @@
 
 # Sign210
 
-Sign210 is a birthday project created for [JJDB210](https://www.twitch.tv/jjdb210). The sign runs using a Raspberry Pi Zero W as the controller, controlling a 124 pixel strip and an 8 by 8 matrix. The project took about 40 days (from idea to gift-giving). Of course, not all of that time was spent on the hat. This repository serves as the latest (and hopefully greatest) code for Sign210.
+Sign210 is a birthday project created for [JJDB210](https://www.twitch.tv/jjdb210). The sign runs using a Raspberry Pi Zero W as the controller, controlling a 124 pixel strip and an 8 by 8 matrix. Twitch commands and events trigger hat changes, like changing the matrix or changing the color of the pixel strip. The project took about 40 days (from idea to gift-giving). Of course, not all of that time was spent on the hat. This repository serves as the latest (and hopefully greatest) code for Sign210.
 
 ## 3D Render
 ![3D Render of Sign210](img/sign210_render.png)
@@ -34,6 +34,8 @@ Sign210 is a birthday project created for [JJDB210](https://www.twitch.tv/jjdb21
 - `!clear` -> clears pending image commands (most twitch events are unaffected)
 - `!shutdown` -> shuts down the raspberry pi
 - `!reboot` or `!restart` -> restarts the raspberry pi
+- `!addcommand <cmd> <img_filename>` -> adds command / entry to COMMANDS DB (ex. `!ac pb pokeball.png`)
+- `!deletecommand <cmd>` -> deletes command cmd (ex. `!dc pb`)
 
 ### User Commands
 - `!img_cmd` -> displays image associated with `img_cmd` in COMMANDS DB for a short duration (ex. `!pokeball` -> shows `pokeball.png`  (if there is an entry in the DB)
