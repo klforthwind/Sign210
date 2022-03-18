@@ -23,7 +23,6 @@ var logEvent = ( ev_type, ev_cmd, ev_msg, ev_extra ) => {
             let sql = `INSERT INTO EVENTS (ev_type, ev_cmd, ev_msg, ev_extra) VALUES 
             (${connection.escape(ev_type)}, ${connection.escape(ev_cmd)}, 
             ${connection.escape(new_msg)}, ${connection.escape(ev_extra)})`
-            console.log(sql)
             connection.query( sql, (err, rows) => {
                 connection.query( 'COMMIT', (err, rows) => {
                     connection.release()
