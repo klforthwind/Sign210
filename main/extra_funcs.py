@@ -22,7 +22,7 @@ def get_strip_from_color(strip_color):
     if rgb_pattern.match(strip_color):
         r,g,b = map(int, strip_color.split(","))
     
-    if r==71 and g==45 and b==77:
+    if r==0 and g==45 and b==77:
         return [(50,0,0) if z <= 23 else (r,g,b) for z in range(124)]
     if r==100 and g==33 and b==0:
         return [(140,33,5) if z <= 23 else (r,g,b) for z in range(124)]
