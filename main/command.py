@@ -79,16 +79,17 @@ def exec_command(event, db, pixels):
             "jjhat": ("jj.png", "255,0,0"),
             "silverhat": ("silverdown.png", "60,60,60"),
             "weaselhat": ("coffee.png", "200,200,200"),
-            "cheesyhat": ("richandcheesy.png", "234,234,20"),
             "danhat": ("d.png", "140,33,0"),
             "fflhat": ("ffl.png", "0,255,0"),
-            "dizhat": ("dizhat.png", "255,182,193"),
+            "dizhat": ("dizhat.png", "71,45,77"),
             "mokihat": ("jj_nft.png", "75,0,0"),
             "katahat": ("k.png", "221,3,207"),
             "goosehat": ("gus.png", "0,250,0"),
             "hobbshat": ("hobbs.png", "234,234,20"),
             "cassandrahat": ("snax.png", "0,0,60"),
-            "blakehat": ("blake.png", "0,0,200")
+            "blakehat": ("blake.png", "0,0,200"),
+            "rbkhat": ("rootbeerking.png", "0,240,0"),
+            "mokihat": ("craft_inc.png", "100,33,0")
         }
 
         if cmd in hats:
