@@ -79,6 +79,7 @@ CLIENT_SECRET=
 
 ### Installing NodeJS on Pi Zero W
 ***Steps Taken From:*** [Hassan Corrigan - Install NodeJS on Pi Zero](https://hassancorrigan.com/blog/install-nodejs-on-a-raspberry-pi-zero/)
+
 ***Recommended to Install NodeJS Outside of Sign210 Repo***
 
 ```sh
