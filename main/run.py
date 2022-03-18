@@ -1,16 +1,5 @@
-from db_conn import *
 # import git
 import os
-
-try:
-    db = DBConn()
-    db.connect()
-
-    db.reset_config()
-
-    db.disconnect()
-except:
-    pass
 
 while True:
     try:
