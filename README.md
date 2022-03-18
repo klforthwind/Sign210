@@ -158,7 +158,6 @@ sudo shutdown -r now # Reboots the machine, and the code will run on boot
 
 
 ## Code Structure
-***To Be Filled Out***
 ### Sign210
 ```
 .
