@@ -2,20 +2,17 @@ from db_conn import *
 # import git
 import os
 
-try:
-    db = DBConn()
-    db.connect()
+db = DBConn()
+db.connect()
 
-    db.reset_config()
+db.reset_config()
 
-    db.disconnect()
-except:
-    pass
+db.disconnect()
 
 while True:
     # g = git.Git('.')
     # g.pull('origin','main')
-    os.system("git pull")
+    os.system("sudo git pull")
 
     # Run python files using sudo - neopixel lights require sudo
     os.system("sudo python3 main.py")
