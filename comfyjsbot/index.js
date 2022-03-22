@@ -16,7 +16,7 @@ var logEvent = ( ev_type, ev_cmd, ev_msg, ev_extra ) => {
     if (ev_msg.length > 254) return;
     new_msg = ev_msg.replace(/'/g, "");
     new_msg = new_msg.replace(/"/g, "");
-    if (ev_type === 'NORMALCHAT') ev_extra = "'{}'";
+    if (ev_type === 'NORMALCHAT') ev_extra = '{}';
     if (ev_extra.length > 2046) return;
 
     pool.getConnection( (err, connection) => {
