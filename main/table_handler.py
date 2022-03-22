@@ -55,7 +55,6 @@ class TableHandler():
 
             sql = "INSERT INTO P_QUEUE (ev_type, ev_cmd, ev_msg, ev_extra, importance) " + \
                 f"VALUES ('{ev_type}', '{row[2]}', '{row[3]}', '{row[4]}', {priority})"
-            print(sql)
             db.execute(sql)
 
         db.execute(f"DELETE FROM EVENTS WHERE id <= {latest_id}")
