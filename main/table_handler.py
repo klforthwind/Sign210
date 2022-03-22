@@ -37,11 +37,11 @@ class TableHandler():
         return event
 
     def process_events(self, db):
-        """Process events from EVENTS table into P_QUEUE table."""
+        """Process events from EVENTS table into P_QUEUE table. Returns 1 on no events."""
         res = db.query("SELECT id, ev_type, ev_cmd, ev_msg, ev_extra FROM EVENTS")
 
         if len(res) == 0:
-            return
+            return 1
         
         latest_id = res[len(res)-1][0]
 
