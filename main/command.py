@@ -90,7 +90,7 @@ def exec_command(event, db, pixels):
             "blakehat": ("blake.png", "0,0,200"),
             "rbkhat": ("rootbeerking.png", "0,240,0"),
             "mokihat": ("craft_inc.png", "100,33,0"),
-            "484hat": ("pac_ghost.png", "240,0,0"),
+            "484hat": ("pac_ghost.png", "255,255,0"),
             "morguehat": ("skull.png", "0,181,207")
         }
 
