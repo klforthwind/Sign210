@@ -47,6 +47,8 @@ class TableHandler():
 
         for row in res:
             ev_type = row[1]
+            if row[2] is None:  # Handle null ev_cmd
+                row[2] = ''
             cmd = row[2].upper()
             is_clear = ev_type == "COMMAND" and cmd in ["ALLCLEAR", "CLEAR"]
 
