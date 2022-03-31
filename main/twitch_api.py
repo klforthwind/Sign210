@@ -70,28 +70,31 @@ if __name__ == "__main__":
     db = DBConn()
 
     while True:
-        db.connect()
-        data = twitch_api.get_twitch_data(db)
+        try:
+            db.connect()
+            data = twitch_api.get_twitch_data(db)
 
-        curr_game = db.get_evar(db.CURR_GAME)
-        new_game = data["game_name"]
+            curr_game = db.get_evar(db.CURR_GAME)
+            new_game = data["game_name"]
 
-        if new_game != curr_game:
-            db.set_evar(db.CURR_GAME, new_game)
-            sql = f"INSERT INTO EVENTS (ev_type, ev_msg, ev_extra) VALUES \
-                ('GAMECHANGE', '{new_game}', '" + "{}')"
-            db.execute(sql)
-
-        followers = data["followers"]
-
-        for f in followers:
-            sql = f"SELECT * FROM FOLLOWERS WHERE user_login='{f}'"
-            if len(db.query(sql)) == 0:
+            if new_game != curr_game:
+                db.set_evar(db.CURR_GAME, new_game)
                 sql = f"INSERT INTO EVENTS (ev_type, ev_msg, ev_extra) VALUES \
-                    ('FOLLOW', '{f}', '" + "{}')"
-                db.execute(sql)
-                sql = f"INSERT INTO FOLLOWERS (user_login) VALUES ('{f}')"
+                    ('GAMECHANGE', '{new_game}', '" + "{}')"
                 db.execute(sql)
 
-        db.disconnect()
-        time.sleep(5)
+            followers = data["followers"]
+
+            for f in followers:
+                sql = f"SELECT * FROM FOLLOWERS WHERE user_login='{f}'"
+                if len(db.query(sql)) == 0:
+                    sql = f"INSERT INTO EVENTS (ev_type, ev_msg, ev_extra) VALUES \
+                        ('FOLLOW', '{f}', '" + "{}')"
+                    db.execute(sql)
+                    sql = f"INSERT INTO FOLLOWERS (user_login) VALUES ('{f}')"
+                    db.execute(sql)
+
+            db.disconnect()
+            time.sleep(5)
+        except:
+            pass # Needed to prevent error on reboot
