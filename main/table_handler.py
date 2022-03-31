@@ -46,17 +46,18 @@ class TableHandler():
         latest_id = res[len(res)-1][0]
 
         for row in res:
-            ev_type = row[1]
-            if row[2] is None:  # Handle null ev_cmd
-                row[2] = ''
-            cmd = row[2].upper()
+            ev = list(row) # Allows for event manipulation
+            ev_type = ev[1]
+            if ev[2] is None:  # Handle null ev_cmd
+                ev[2] = ''
+            cmd = ev[2].upper()
             is_clear = ev_type == "COMMAND" and cmd in ["ALLCLEAR", "CLEAR"]
 
             priority_key = cmd if is_clear else ev_type
             priority = self.ev_priority[priority_key]
 
             sql = "INSERT INTO P_QUEUE (ev_type, ev_cmd, ev_msg, ev_extra, importance) " + \
-                f"VALUES ('{ev_type}', '{row[2]}', '{row[3]}', '{row[4]}', {priority})"
+                f"VALUES ('{ev_type}', '{ev[2]}', '{ev[3]}', '{ev[4]}', {priority})"
             db.execute(sql)
 
         db.execute(f"DELETE FROM EVENTS WHERE id <= {latest_id}")
