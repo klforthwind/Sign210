@@ -58,8 +58,8 @@ def loading_raid(event, db, pixels):
 def animate_raid(event, db, pixels):
     """Runs loading_raid and then runs Rick if triggered by broadcaster or mod."""
     loading_raid(event, db, pixels)
-    if event[4]['flags']['vip'] or event[4]['flags']['broadcaster'] or event[4]['flags']['moderator']:
-        rick(event, db, pixels)
+    # if event[4]['flags']['vip'] or event[4]['flags']['broadcaster']:
+    rick(event, db, pixels)
 
 def pulse(db, pixels, image, rgb1_list, rgb2_list, run_time):
     """Shows image and pulse of colors using lerp function over time."""
