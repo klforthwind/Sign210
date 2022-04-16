@@ -3,6 +3,8 @@
 
 Sign210 is a birthday project created for [JJDB210](https://www.twitch.tv/jjdb210). The sign runs using a Raspberry Pi Zero W as the controller, controlling a 124 pixel strip and an 8 by 8 matrix. Twitch commands and events trigger hat changes, like changing the matrix or changing the color of the pixel strip. The project took about 40 days (from idea to gift-giving). Of course, not all of that time was spent on the hat. This repository serves as the latest (and hopefully greatest) code for Sign210.
 
+Video on Sign210 can be found [here](https://youtu.be/IpTuNB4vUXA).
+
 ## 3D Render
 ![3D Render of Sign210](img/sign210_render.png)
 
@@ -218,6 +220,9 @@ sudo shutdown -r now # Reboots the machine, and the code will run on boot
 │   └── P_QUEUE.sql         # Priority queue for events
 └── ...
 ```
+
+## Software Design
+![](img/Sign210_FileStructure.png)
 
 ## Hardware Design
 ![](img/sign210_hardware.png)
