@@ -91,7 +91,8 @@ def exec_command(event, db, pixels):
             "rbkhat": ("rootbeerking.png", "0,240,0"),
             "mokihat": ("craft_inc.png", "100,33,0"),
             "484hat": ("pac_ghost.png", "255,255,0"),
-            "morguehat": ("skull.png", "0,181,207")
+            "morguehat": ("skull.png", "0,181,207"),
+            "rainbowhat": ("rainbowk.png", "253,182,40")
         }
 
         if cmd in hats:
