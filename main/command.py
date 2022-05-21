@@ -149,6 +149,14 @@ def exec_command(event, db, pixels):
         for x in range(8, -1, -1):
             pixels.show(f"lurk/{x}.png", strip)
             time.sleep(0.3)
+    
+    if cmd == 'wearhat':
+        db.set_evar(db.CURR_MAT, "")
+        strip = get_strip(db)
+
+        for x in range(5):
+            pixels.show(f"wearhat/{x}.png", strip)
+            time.sleep(0.3)
 
 
     if valid_msg(cmd):
