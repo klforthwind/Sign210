@@ -157,6 +157,7 @@ def exec_command(event, db, pixels):
         for x in range(5):
             pixels.show(f"wearhat/{x}.png", strip)
             time.sleep(0.3)
+        time.sleep(3)
 
 
     if valid_msg(cmd):
