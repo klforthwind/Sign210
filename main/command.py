@@ -79,7 +79,7 @@ def exec_command(event, db, pixels):
             "jjhat": ("jj.png", "255,0,0"),
             "silverhat": ("silverdown.png", "60,60,60"),
             "weaselhat": ("coffee.png", "200,200,200"),
-            "danhat": ("d.png", "140,33,0"),
+            "danhat": ("wwd.png", "120,33,0"),
             "fflhat": ("ffl.png", "0,255,0"),
             "dizhat": ("dizhat.png", "0,45,77"),
             "mokihat": ("jj_nft.png", "75,0,0"),
