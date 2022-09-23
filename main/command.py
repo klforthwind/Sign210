@@ -103,7 +103,7 @@ def exec_command(event, db, pixels):
 
         if cmd == 'charleshat':
             strip = get_strip_from_color("156,235,250")
-            DURATION = 10
+            DURATION = 4
             db.set_evar(db.CURR_MAT, "")
             j = 0
             end_time = time.time() + DURATION
