@@ -93,13 +93,25 @@ def exec_command(event, db, pixels):
             "484hat": ("pac_ghost.png", "255,255,0"),
             "morguehat": ("skull.png", "0,181,207"),
             "rainbowhat": ("rainbowk.png", "253,182,40"),
-            "gphat": ("gp.png", "0,181,255")
+            "gphat": ("gp.png", "0,181,255"),
+            "charleshat": ("charles_star.png", "156,235,250")
         }
 
         if cmd in hats:
             db.set_evar(db.DEF_MAT, hats[cmd][0])
             db.set_evar(db.DEF_STRIP, hats[cmd][1])
-        
+
+        if cmd == 'charleshat':
+            strip = get_strip_from_color("156,235,250")
+            DURATION = 10
+            db.set_evar(db.CURR_MAT, "")
+            j = 0
+            end_time = time.time() + DURATION
+            while time.time() < end_time:
+                pixels.show(f"charles_star/star{(j//6)%12+1}.png", strip)
+                time.sleep(0.0125)
+                j+=2
+
         if cmd == 'hats':
             db.set_evar(db.CURR_MAT, "")
             db.set_evar(db.CURR_STRIP, "")
