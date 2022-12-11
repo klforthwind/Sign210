@@ -146,7 +146,7 @@ def exec_command(event, db, pixels):
         min_left = round((start - today).total_seconds() / 60)
         for x in range(7, -106, -1):
             pixels.matrix.fill(0x000000)
-            pixels.matrix.text(f"{min_left} Mins Remaining", x, (x//2)%2, int('0x%02x%02x%02x' % strip[120], 16))
+            pixels.matrix.text(f"Time Left: {min_left} mins", x, (x//2)%2, int('0x%02x%02x%02x' % strip[120], 16))
             pixels.matrix.display()
             time.sleep(0.1)
         set_default(db, pixels)
