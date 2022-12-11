@@ -136,6 +136,20 @@ def exec_command(event, db, pixels):
             pixels.matrix.display()
             time.sleep(0.1)
         set_default(db, pixels)
+    if cmd in ['cd', 'countdown']:
+        db.set_evar(db.CURR_MAT, "")
+        strip = get_strip(db)
+        pixels.show(db.get_evar(db.DEF_MAT), strip)
+
+        start = datetime.strptime('12/11/2022 23:59:00', '%m/%d/%Y %H:%M:%S')
+        today = datetime.now()
+        min_left = round((start - today).total_seconds() / 60)
+        for x in range(7, -106, -1):
+            pixels.matrix.fill(0x000000)
+            pixels.matrix.text(f"{min_left} Mins Remaining", x, (x//2)%2, int('0x%02x%02x%02x' % strip[120], 16))
+            pixels.matrix.display()
+            time.sleep(0.1)
+        set_default(db, pixels)
     if cmd in ['temps','tmp']:
         db.set_evar(db.CURR_MAT, "")
 
