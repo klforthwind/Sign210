@@ -113,7 +113,7 @@ def slow_rainbow_shift(event, db, pixels):
 def show_game(db, pixels, game_title, wait_time):
     """Changes matrix to game_title for a certain amount of time."""
 
-    db.set_evar(db.CURR_MAT, "")
+    """db.set_evar(db.CURR_MAT, "")"""
     strip = get_strip(db)
 
     games = {
@@ -129,8 +129,9 @@ def show_game(db, pixels, game_title, wait_time):
 
     for game in games:
         if game in game_title:
-            pixels.show(games[game], strip)
-            time.sleep(wait_time)
+			db.set_evar(db.DEF_MAT, games[game])
+            """pixels.show(games[game], strip)
+            time.sleep(wait_time)"""
             break
 
 def cheer(event, db, pixels):
