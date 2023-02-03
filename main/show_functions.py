@@ -129,7 +129,7 @@ def show_game(db, pixels, game_title, wait_time):
 
     for game in games:
         if game in game_title:
-			db.set_evar(db.DEF_MAT, games[game])
+            db.set_evar(db.DEF_MAT, games[game])
             """pixels.show(games[game], strip)
             time.sleep(wait_time)"""
             break
