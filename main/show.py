@@ -45,6 +45,7 @@ class Show():
 
             strip = get_strip(db)
             pixels.show(default_matrix, strip)
+			subprocess.run(["/home/justin/test.php", strip]) 
 
     def run_raid(self, event, db, pixels):
         animate_raid(event, db, pixels)
