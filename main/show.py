@@ -3,6 +3,7 @@ from show_functions import *
 from extra_funcs import *
 from command import *
 import json
+import subprocess
 
 class Show():
 
