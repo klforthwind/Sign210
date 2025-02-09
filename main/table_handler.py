@@ -38,7 +38,7 @@ class TableHandler():
 
     def process_events(self, db):
         """Process events from EVENTS table into P_QUEUE table."""
-        res = db.query("SELECT id, ev_type, ev_cmd, ev_msg, ev_extra FROM EVENTS")
+        res = db.query("SELECT id, ev_type, ev_cmd, ev_msg, ev_extra FROM `EVENTS` ")
 
         if len(res) == 0:
             return
@@ -56,11 +56,14 @@ class TableHandler():
             priority_key = cmd if is_clear else ev_type
             priority = self.ev_priority[priority_key]
 
-            sql = "INSERT INTO P_QUEUE (ev_type, ev_cmd, ev_msg, ev_extra, importance) " + \
-                f"VALUES ('{ev_type}', '{ev[2]}', '{ev[3]}', '{ev[4]}', {priority})"
-            db.execute(sql)
+            sql = "INSERT INTO P_QUEUE (`ev_type`, `ev_cmd`, `ev_msg`, `ev_extra`, `importance`) VALUES (%s, %s, %s, %s, %s)";
+            
+            #'{ev_type}', '{ev[2]}', '{ev[3]}', '{ev[4]}', {priority})"
+            #cursor = db.cursor()
+            cowsarecool = [(ev_type,ev[2],ev[3],ev[4],priority)]
+            db.execute2(sql, cowsarecool)
 
-        db.execute(f"DELETE FROM EVENTS WHERE id <= {latest_id}")
+        db.execute(f"DELETE FROM `EVENTS` WHERE `id` <= {latest_id}")
 
     # event = (id, ev_type, ev_extra, importance)
     def should_clear(self, event):

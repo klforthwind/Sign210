@@ -50,6 +50,10 @@ class DBConn():
         self.cursor.execute(query)
         self.mydb.commit()
 
+    def execute2(self, query, data):
+        self.cursor.executemany(query, data)
+        self.mydb.commit()
+
     def get_evar(self, evar):
         """Get config variable."""
         res = self.query(f"SELECT * FROM CONFIG WHERE evar = '{evar}'")
