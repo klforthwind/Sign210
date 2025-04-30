@@ -105,3 +105,6 @@ dist
 
 # Python Cache
 __pycache__
+
+# macOS .DS_Store
+*.DS_Store
