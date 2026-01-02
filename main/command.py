@@ -95,7 +95,7 @@ def exec_command(event, db, pixels):
             "rainbowhat": ("rainbowk.png", "253,182,40"),
             "gphat": ("gp.png", "0,181,255"),
             "charleshat": ("charles_star.png", "156,235,250"),
-            "squroadhat": ("rick.png","0,0,250"),
+            "squroadhat": ("persona8.png","250,0,0"),
             "b64hat": ("b64.png","250,0,0"),
 			"madmanhat": ("madman.png","0,250,0"),
             "smbfanhat": ("smbfan.png","54,84,217"),
@@ -114,19 +114,29 @@ def exec_command(event, db, pixels):
             j = 0
             end_time = time.time() + DURATION
             while time.time() < end_time:
-                pixels.show(f"charles_star/star{(j//6)%12+1}.png", strip)
-                time.sleep(0.0125)
-                j+=2
-        if cmd == 'squroadhat':
+                pixels.show(f"charles_star/star{(j)%12+1}.png", strip)
+                ##time.sleep(0.0125)
+                j+=1
+        if cmd == 'rickroll':
             strip = get_strip_from_color("0,0,250")
             DURATION = 8
             db.set_evar(db.CURR_MAT, "")
             j = 0
             end_time = time.time() + DURATION
             while time.time() < end_time:
-                pixels.show(f"rick/{(j//6)%20+1}.png", strip)
-                time.sleep(0.0125)
-                j+=2
+                pixels.show(f"rick/{(j)%20+1}.png", strip)
+                #time.sleep(0.0125)
+                j+=1
+        if cmd == 'squroadhat':
+            strip = get_strip_from_color("250,0,0")
+            DURATION = 8
+            db.set_evar(db.CURR_MAT, "")
+            j = 0
+            end_time = time.time() + DURATION
+            while time.time() < end_time:
+                pixels.show(f"persona/persona{(j)%8+1}.png", strip)
+                #time.sleep(0.0125)
+                j+=1
         if cmd == 'hats':
             db.set_evar(db.CURR_MAT, "")
             db.set_evar(db.CURR_STRIP, "")
@@ -135,7 +145,7 @@ def exec_command(event, db, pixels):
                 config = hats[h]
                 strip = get_strip_from_color(config[1])
                 pixels.show(config[0], strip)
-                time.sleep(1)
+                #time.sleep(1)
     if cmd in ['ep', 'episode']:
         db.set_evar(db.CURR_MAT, "")
 
@@ -149,7 +159,7 @@ def exec_command(event, db, pixels):
             pixels.matrix.fill(0x000000)
             pixels.matrix.text(f"EP. {ep_num}", x, (x//2)%2, int('0x%02x%02x%02x' % strip[120], 16))
             pixels.matrix.display()
-            time.sleep(0.1)
+            #time.sleep(0.1)
         set_default(db, pixels)
     if cmd in ['cd', 'countdown']:
         db.set_evar(db.CURR_MAT, "")
